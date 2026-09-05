@@ -46,7 +46,7 @@ MAX_MESSAGE_LENGTH = 500
 
 # Bootstrap admin (created on first boot if no users exist).
 ADMIN_USERNAME = os.environ.get("PRIMEFEED_ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD = os.environ.get("PRIMEFEED_ADMIN_PASSWORD", "ChangeMe_Admin_2026!")
+ADMIN_PASSWORD = os.environ.get("PRIMEFEED_ADMIN_PASSWORD", "temporary_admin_password")
 ADMIN_EMAIL = os.environ.get("PRIMEFEED_ADMIN_EMAIL", "admin@primefeed.local")
 
 # Dev-only TOTP helper (see app/api/dev.py). Disable in production!

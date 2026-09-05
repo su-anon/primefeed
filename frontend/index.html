@@ -66,12 +66,12 @@
 </div>
 <!-- Action Buttons -->
 <div class="flex items-center gap-3">
-<a class="text-sm font-medium text-on-surface-variant hover:text-on-surface px-3 py-1.5 transition-colors" href="#subscribe">
+<a class="text-sm font-medium text-on-surface-variant hover:text-on-surface px-3 py-1.5 transition-colors" href="/login/">
           Sign In
         </a>
-<a class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary hover:bg-sky-400 text-surface-dim font-semibold text-sm transition-all shadow-sm" href="#subscribe">
-<span class="material-symbols-outlined text-base">key</span>
-<span>Read Encrypted</span>
+<a class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary hover:bg-sky-400 text-surface-dim font-semibold text-sm transition-all shadow-sm" href="/register/">
+<span class="material-symbols-outlined text-base">person_add</span>
+<span>Create Account</span>
 </a>
 </div>
 </div>
@@ -339,25 +339,28 @@
 </div>
 </div>
 </section>
-<!-- NEWSLETTER / PUBLISHER CTA (INTERACTIVE) -->
-<section class="py-20 px-6" id="subscribe">
+<!-- GET STARTED CTA -->
+<section class="py-20 px-6" id="join">
 <div class="max-w-4xl mx-auto rounded-2xl border border-outline-variant bg-gradient-to-br from-surface-container to-surface p-8 sm:p-12 text-center space-y-6 shadow-xl">
-<span class="text-xs font-mono uppercase tracking-widest text-primary font-bold">Encrypted Syndicate</span>
+<span class="text-xs font-mono uppercase tracking-widest text-primary font-bold">Encrypted Threat Platform</span>
 <h2 class="text-3xl sm:text-4xl font-bold font-display text-on-surface tracking-tight">
-  Join the Zero-Knowledge Intelligence Feed
+  Join PrimeFeed Journal
 </h2>
 <p class="text-base sm:text-lg text-on-surface-variant max-w-xl mx-auto leading-relaxed">
-  Receive peer-reviewed threat analyses in your inbox or generate your client asymmetric keypair to publish verifiable dispatches anonymously.
+  Access verified threat intelligence, explore peer-reviewed cryptographic writeups, or publish encrypted dispatches directly.
 </p>
-<form id="pf-landing-digest-form" class="max-w-md mx-auto flex flex-col sm:flex-row gap-3 pt-2">
-<input id="pf-landing-digest-email" class="flex-1 px-4 py-3 rounded-lg bg-surface-dim border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary text-sm text-on-surface placeholder:text-outline outline-none transition-all" placeholder="researcher@domain.org" required="" type="email"/>
-<button id="pf-landing-digest-btn" class="px-5 py-3 rounded-lg bg-primary hover:bg-sky-400 text-surface-dim font-semibold text-sm transition-all whitespace-nowrap shadow-md cursor-pointer flex items-center justify-center gap-1.5" type="submit">
-  <span>Subscribe to Feed</span>
-</button>
-</form>
-<div id="pf-landing-digest-status" class="hidden text-xs font-mono text-secondary py-1"></div>
+<div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+  <a class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary hover:bg-sky-400 text-surface-dim font-semibold text-sm transition-all shadow-md" href="/register/">
+    <span class="material-symbols-outlined text-base">person_add</span>
+    <span>Create Free Account</span>
+  </a>
+  <a class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-outline-variant hover:border-outline bg-surface-container/60 hover:bg-surface-container text-on-surface font-medium text-sm transition-all" href="/home/">
+    <span class="material-symbols-outlined text-base">explore</span>
+    <span>Explore Live Feed</span>
+  </a>
+</div>
 <p class="text-xs text-on-surface-variant font-mono">
-  Zero trackers • No third-party email scripts • Open CLI bindings available
+  Zero trackers • End-to-end encrypted profile • 100% Client-side cryptography
 </p>
 </div>
 </section>

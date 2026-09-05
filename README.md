@@ -53,7 +53,7 @@ On first boot the app generates:
 - the ElGamal domain parameters (`data/elgamal_domain.json`),
 - the server master RSA key (`data/master_key.json`),
 - the server secret (`data/server_secret.txt`),
-- a bootstrap **admin** account (`admin` / `ChangeMe_Admin_2026!` — change it!).
+- a bootstrap **admin** account (`admin` / `temporary_admin_password` — change it!).
 
 ## Security model
 

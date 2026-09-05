@@ -157,7 +157,7 @@ def test_posts_crud_and_integrity(client):
     assert log[0]["record_type"] == "post"
 
     # Admin can review the integrity log
-    admin_token = _login(client, "admin", "ChangeMe_Admin_2026!")
+    admin_token = _login(client, "admin", "temporary_admin_password")
     r = client.get("/api/admin/integrity-log", headers={"x-session-token": admin_token})
     assert r.status_code == 200
     assert len(r.json()["entries"]) == 1
@@ -191,7 +191,7 @@ def test_rbac_admin_only(client):
     r = client.get("/api/admin/users", headers={"x-session-token": alice_token})
     assert r.status_code == 403
 
-    admin_token = _login(client, "admin", "ChangeMe_Admin_2026!")
+    admin_token = _login(client, "admin", "temporary_admin_password")
     r = client.get("/api/admin/users", headers={"x-session-token": admin_token})
     assert r.status_code == 200
     usernames = {u["username"] for u in r.json()["users"]}
@@ -199,7 +199,7 @@ def test_rbac_admin_only(client):
 
 
 def test_admin_suspend_and_rotation(client):
-    admin_token = _login(client, "admin", "ChangeMe_Admin_2026!")
+    admin_token = _login(client, "admin", "temporary_admin_password")
     ctx = client.app.state.ctx
     bob_id = ctx.db.fetchone("SELECT id FROM users WHERE username = 'bob'")["id"]
 
@@ -268,7 +268,7 @@ def test_users_directory(client):
 
 def test_admin_governance_and_moderation(client):
     _restore_user(client, "bob")
-    admin_token = _login(client, "admin", "ChangeMe_Admin_2026!")
+    admin_token = _login(client, "admin", "temporary_admin_password")
     ctx = client.app.state.ctx
 
     # elevate bob (currently user) to admin

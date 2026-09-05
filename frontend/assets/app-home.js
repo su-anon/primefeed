@@ -588,33 +588,6 @@
       };
     });
 
-    // Newsletter form
-    const digestForm = document.getElementById('pf-digest-form');
-    if (digestForm) {
-      digestForm.onsubmit = (e) => {
-        e.preventDefault();
-        const input = document.getElementById('pf-digest-email');
-        const btn = document.getElementById('pf-digest-btn');
-        const status = document.getElementById('pf-digest-status');
-        const email = input.value.trim();
-        if (!email) return;
-
-        btn.disabled = true;
-        btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span><span>Enrolling…</span>';
-
-        setTimeout(() => {
-          btn.disabled = false;
-          btn.innerHTML = '<span>Subscribed</span>';
-          input.value = '';
-          if (status) {
-            status.textContent = '✓ Subscribed to daily zero-knowledge digest';
-            status.classList.remove('hidden');
-          }
-          pfToast(`Terminal ${email} subscribed to encrypted digest`, true);
-        }, 600);
-      };
-    }
-
     // Inspect spec button in featured card
     const inspectBtn = document.getElementById('pf-inspect-crypto-btn');
     if (inspectBtn) {

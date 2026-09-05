@@ -13,7 +13,7 @@ Central configuration, all overridable via environment variables:
 | `PRIMEFEED_ELGAMAL_Q_BITS` | `256` | ElGamal subgroup order size |
 | `PRIMEFEED_PBKDF2_ITERATIONS` | `10000` | Password KDF cost (pure-Python; 120k would take ~70s/login) |
 | `PRIMEFEED_SESSION_TTL` | `86400` | Session lifetime (s) |
-| `PRIMEFEED_ADMIN_USERNAME/PASSWORD/EMAIL` | `admin` / `ChangeMe_Admin_2026!` | Bootstrap admin |
+| `PRIMEFEED_ADMIN_USERNAME/PASSWORD/EMAIL` | `admin` / `temporary_admin_password` | Bootstrap admin |
 
 ## database.py — the ciphertext vault
 

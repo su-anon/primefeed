@@ -46,7 +46,7 @@ def main():
     parser = argparse.ArgumentParser(description="PrimeFeed HTTP smoke test")
     parser.add_argument("--base", default=BASE, help="base URL of the running server")
     parser.add_argument("--user", default="admin", help="username to log in as")
-    parser.add_argument("--password", default="ChangeMe_Admin_2026!",
+    parser.add_argument("--password", default="temporary_admin_password",
                         help="password (default is the bootstrap admin password)")
     parser.add_argument("--db", default=None, help="path to primefeed.db (for the TOTP secret)")
     args = parser.parse_args()

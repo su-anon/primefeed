@@ -37,31 +37,4 @@
     }
   }
   checkHealth();
-
-  // Wire landing newsletter
-  const form = document.getElementById('pf-landing-digest-form');
-  if (form) {
-    form.onsubmit = (e) => {
-      e.preventDefault();
-      const input = document.getElementById('pf-landing-digest-email');
-      const btn = document.getElementById('pf-landing-digest-btn');
-      const status = document.getElementById('pf-landing-digest-status');
-      const email = input.value.trim();
-      if (!email) return;
-
-      btn.disabled = true;
-      btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span><span>Sealing…</span>';
-
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.innerHTML = '<span>Subscribed</span>';
-        input.value = '';
-        if (status) {
-          status.textContent = '✓ Terminal identity enrolled into zero-knowledge dispatch feed';
-          status.classList.remove('hidden');
-        }
-        pfToast(`Subscribed ${email} to cryptographic feed`, true);
-      }, 500);
-    };
-  }
 })();

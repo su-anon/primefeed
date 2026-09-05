@@ -54,7 +54,7 @@ def main():
         # 2. 2FA login
         alice = login(client, "alice", "Password123!")
         bob = login(client, "bob", "Password123!")
-        admin = login(client, "admin", "ChangeMe_Admin_2026!")
+        admin = login(client, "admin", "temporary_admin_password")
         print("[login] alice, bob, admin authenticated via 2FA")
 
         # 3. Profile (RSA-encrypted)
