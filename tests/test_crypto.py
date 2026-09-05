@@ -43,6 +43,25 @@ def test_totp_self_consistency():
     assert totp_code(secret, t=t) != totp_code(secret, t=t - 90)
 
 
+def test_totp_30_second_window():
+    secret = generate_totp_secret()
+    t = int(time.time())
+    code_prev = totp_code(secret, t=t - 30)
+    code_curr = totp_code(secret, t=t)
+    code_next = totp_code(secret, t=t + 30)
+    code_too_old = totp_code(secret, t=t - 60)
+    code_too_future = totp_code(secret, t=t + 60)
+
+    # Previous 30s and next 30s are valid with current server time
+    assert verify_totp(secret, code_prev, t=t)
+    assert verify_totp(secret, code_curr, t=t)
+    assert verify_totp(secret, code_next, t=t)
+
+    # Codes beyond 30 seconds are rejected
+    assert not verify_totp(secret, code_too_old, t=t)
+    assert not verify_totp(secret, code_too_future, t=t)
+
+
 def test_rsa_roundtrip_and_signature():
     kp = rsa.generate_rsa_keypair(1024)  # small key for test speed
     msg = b'{"email": "alice@example.com", "name": "Alice"}'

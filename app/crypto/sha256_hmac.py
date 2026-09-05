@@ -53,8 +53,21 @@ def totp_code(secret_b32: str, digits: int = 6, time_step: int = 30, t: int | No
 
 def verify_totp(secret_b32: str, code: str, digits: int = 6, time_step: int = 30,
                 window: int = 1, t: int | None = None) -> bool:
-    """Verify a TOTP code against the current time, allowing +/- window steps."""
+    """Verify a TOTP code against the current time, allowing +/- window (30s) steps.
+
+    With window=1 and time_step=30, the previous 30s (-30s), current, and next
+    30s (+30s) intervals are all accepted. Supports both SHA-256 and SHA-1
+    (standard mobile authenticators like Google Authenticator).
+    """
     if t is None:
         t = int(time.time())
-    totp = pyotp.TOTP(secret_b32, digits=digits, interval=time_step, digest=hashlib.sha256)
-    return bool(totp.verify(code, for_time=t, valid_window=window))
+    code_str = str(code).strip()
+    # 1. Primary: SHA-256
+    totp256 = pyotp.TOTP(secret_b32, digits=digits, interval=time_step, digest=hashlib.sha256)
+    if totp256.verify(code_str, for_time=t, valid_window=window):
+        return True
+    # 2. Fallback: SHA-1 for mobile authenticator apps
+    totp1 = pyotp.TOTP(secret_b32, digits=digits, interval=time_step, digest=hashlib.sha1)
+    if totp1.verify(code_str, for_time=t, valid_window=window):
+        return True
+    return False

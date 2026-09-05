@@ -11,6 +11,8 @@ import json
 import time
 
 from fastapi import APIRouter, Depends, HTTPException, Request
+import pyotp
+import segno
 
 from ..core import config, security
 from ..crypto import rsa, totp
@@ -67,8 +69,19 @@ def register(request: Request, body: dict):
         "INSERT INTO profiles (user_id, encrypted, hmac, updated_at) VALUES (?, ?, ?, ?)",
         (user_id, ct_hex, badge, now))
 
-    return {"ok": True, "user_id": user_id, "totp_secret": totp_secret,
-            "message": "registration complete; enroll the TOTP secret in your authenticator app"}
+    totp_obj = pyotp.TOTP(totp_secret)
+    totp_uri = totp_obj.provisioning_uri(name=username, issuer_name="PrimeFeed")
+    qr = segno.make(totp_uri)
+    qr_svg_data_uri = qr.svg_data_uri(scale=5, border=2, light="#FFFFFF", dark="#000000")
+
+    return {
+        "ok": True,
+        "user_id": user_id,
+        "totp_secret": totp_secret,
+        "totp_uri": totp_uri,
+        "totp_qr": qr_svg_data_uri,
+        "message": "registration complete; scan QR code or enroll the TOTP secret in your authenticator app",
+    }
 
 
 @router.post("/login")
@@ -106,7 +119,7 @@ def login_2fa(request: Request, body: dict):
         "SELECT id, totp_secret, role, is_suspended FROM users WHERE id = ?", (pending["user_id"],))
     if row is None or row["is_suspended"]:
         raise HTTPException(403, "account unavailable")
-    if not totp.verify_totp(row["totp_secret"], code):
+    if not totp.verify_totp(row["totp_secret"], code, window=1):
         raise HTTPException(401, "invalid 2FA code")
 
     token = security.generate_session_token()

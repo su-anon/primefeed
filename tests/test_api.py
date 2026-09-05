@@ -86,6 +86,8 @@ def test_register_and_login_flow(client):
     data = _register(client, "alice")
     assert data["ok"] is True
     assert data["totp_secret"]  # 2FA secret returned for enrollment
+    assert data["totp_qr"].startswith("data:image/svg+xml")
+    assert data["totp_uri"].startswith("otpauth://totp/")
 
     # Wrong password rejected
     r = client.post("/api/auth/login", json={"username": "alice", "password": "wrongpass"})

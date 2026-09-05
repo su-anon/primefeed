@@ -42,7 +42,97 @@ function pfEnsureStatus() {
   const panel = document.getElementById('panel-totp');
   if (!panel) return;
   const inputs = [...panel.querySelectorAll('input[maxlength="1"]')];
-  inputs.forEach((inp, k) => { inp.id = 'totp-' + (k + 1); });
+  inputs.forEach((inp, k) => {
+    inp.id = 'totp-' + (k + 1);
+    inp.setAttribute('inputmode', 'numeric');
+    inp.setAttribute('pattern', '[0-9]*');
+    inp.setAttribute('autocomplete', 'one-time-code');
+
+    // Auto-select text on focus so replacing is fast
+    inp.addEventListener('focus', () => {
+      inp.select();
+    });
+
+    // Auto-advance on digit input
+    inp.addEventListener('input', (e) => {
+      const val = inp.value.replace(/\D/g, '');
+      if (val.length > 1) {
+        // Multi-character input (e.g. mobile auto-fill)
+        const digits = val.split('');
+        digits.forEach((d, i) => {
+          if (k + i < inputs.length) {
+            inputs[k + i].value = d;
+          }
+        });
+        const nextIdx = Math.min(inputs.length - 1, k + digits.length);
+        inputs[nextIdx].focus();
+        return;
+      }
+
+      if (val.length === 1) {
+        inp.value = val;
+        if (k < inputs.length - 1) {
+          inputs[k + 1].focus();
+          inputs[k + 1].select();
+        }
+      } else {
+        inp.value = '';
+      }
+    });
+
+    // Auto-retreat on Backspace, arrow navigation, enter key submit
+    inp.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace') {
+        if (!inp.value && k > 0) {
+          e.preventDefault();
+          inputs[k - 1].value = '';
+          inputs[k - 1].focus();
+        } else if (inp.value) {
+          inp.value = '';
+          e.preventDefault();
+        }
+      } else if (e.key === 'ArrowLeft' && k > 0) {
+        e.preventDefault();
+        inputs[k - 1].focus();
+        inputs[k - 1].select();
+      } else if (e.key === 'ArrowRight' && k < inputs.length - 1) {
+        e.preventDefault();
+        inputs[k + 1].focus();
+        inputs[k + 1].select();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (verify) verify.click();
+      }
+    });
+
+    // Auto-distribute pasted 6-digit code
+    inp.addEventListener('paste', (e) => {
+      e.preventDefault();
+      const pasted = (e.clipboardData || window.clipboardData)?.getData('text') || '';
+      const digits = pasted.replace(/\D/g, '');
+      if (!digits) return;
+      const start = (digits.length === 6) ? 0 : k;
+      digits.split('').slice(0, inputs.length - start).forEach((d, i) => {
+        if (inputs[start + i]) inputs[start + i].value = d;
+      });
+      const nextIdx = Math.min(inputs.length - 1, start + digits.length);
+      inputs[nextIdx].focus();
+      if (digits.length >= 6 && verify) {
+        setTimeout(() => verify.click(), 100);
+      }
+    });
+  });
+
+  // Hook switchStage to automatically focus the first TOTP box when panel appears
+  const origSwitchStage = window.switchStage;
+  if (typeof origSwitchStage === 'function') {
+    window.switchStage = function (stage) {
+      origSwitchStage(stage);
+      if (stage === 'totp') {
+        setTimeout(() => { inputs[0]?.focus(); }, 60);
+      }
+    };
+  }
 
   // Verify & Decrypt Session
   const verify = [...panel.querySelectorAll('button')].find(b => b.textContent.includes('Verify & Decrypt Session'));
