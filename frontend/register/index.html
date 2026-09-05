@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CIPHERDECK // JOURNAL - Cryptographic Registration &amp; Keypair Provisioning</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-primary": "#006591",
+            "surface-container-lowest": "#0a0e16",
+            "inverse-on-surface": "#2c3039",
+            "on-tertiary": "#003640",
+            "surface-variant": "#31353e",
+            "primary": "#89ceff",
+            "surface-tint": "#89ceff",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "on-primary-fixed": "#001e2f",
+            "surface-container-high": "#262a33",
+            "tertiary-container": "#00aac6",
+            "primary-container": "#0ea5e9",
+            "secondary-fixed-dim": "#4edea3",
+            "secondary": "#4edea3",
+            "primary-fixed": "#c9e6ff",
+            "primary-fixed-dim": "#89ceff",
+            "on-background": "#dfe2ee",
+            "on-primary-fixed-variant": "#004c6e",
+            "on-secondary-fixed": "#002113",
+            "on-surface-variant": "#bec8d2",
+            "surface-container": "#1c2028",
+            "error": "#ffb4ab",
+            "on-error": "#690005",
+            "on-tertiary-fixed": "#001f26",
+            "on-tertiary-container": "#003943",
+            "on-primary-container": "#003751",
+            "tertiary": "#4cd7f6",
+            "tertiary-fixed-dim": "#4cd7f6",
+            "surface": "#0f131c",
+            "inverse-surface": "#dfe2ee",
+            "on-error-container": "#ffdad6",
+            "secondary-container": "#00a572",
+            "on-surface": "#dfe2ee",
+            "outline-variant": "#3e4850",
+            "background": "#0f131c",
+            "on-secondary": "#003824",
+            "on-primary": "#00344d",
+            "secondary-fixed": "#6ffbbe",
+            "surface-bright": "#353942",
+            "on-secondary-container": "#00311f",
+            "tertiary-fixed": "#acedff",
+            "outline": "#88929b",
+            "surface-container-highest": "#31353e",
+            "on-secondary-fixed-variant": "#005236",
+            "error-container": "#93000a",
+            "surface-dim": "#0f131c",
+            "surface-container-low": "#181c24"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "panel-padding-compact": "12px",
+            "space-2xs": "2px",
+            "space-md": "16px",
+            "space-xl": "32px",
+            "panel-padding-spacious": "24px",
+            "space-sm": "8px",
+            "space-3xl": "64px",
+            "space-lg": "24px",
+            "grid-step": "4px",
+            "gutter-desktop": "16px",
+            "gutter-mobile": "12px",
+            "space-2xl": "48px",
+            "space-xs": "4px"
+          },
+          "fontFamily": {
+            "display-xl-mobile": ["Space Grotesk", "sans-serif"],
+            "body-md": ["Space Mono", "monospace"],
+            "headline-sm": ["Space Grotesk", "sans-serif"],
+            "label-code": ["Space Mono", "monospace"],
+            "headline-lg-mobile": ["Space Grotesk", "sans-serif"],
+            "headline-lg": ["Space Grotesk", "sans-serif"],
+            "body-lg": ["Space Mono", "monospace"],
+            "headline-md": ["Space Grotesk", "sans-serif"],
+            "display-xl": ["Space Grotesk", "sans-serif"],
+            "body-sm": ["Space Mono", "monospace"],
+            "telemetry-micro": ["Space Mono", "monospace"]
+          },
+          "fontSize": {
+            "display-xl-mobile": ["32px", { "lineHeight": "36px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "body-md": ["13px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" }],
+            "label-code": ["12px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-lg": ["15px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display-xl": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+            "body-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "400" }],
+            "telemetry-micro": ["9px", { "lineHeight": "12px", "letterSpacing": "0.12em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 16px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      vertical-align: middle;
+    }
+    input::placeholder {
+      color: #3e4850;
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface antialiased min-h-screen flex flex-col font-body-md select-none">
+<!-- TOP APP / AUTH CONSOLE BAR (Contextual Authentication Shell) -->
+<header class="w-full bg-surface-container-lowest border-b border-outline-variant px-gutter-desktop h-14 flex items-center justify-between shrink-0">
+<div class="flex items-center gap-space-md">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-wider text-primary uppercase">
+        CIPHERDECK // JOURNAL
+      </span>
+<span class="text-outline-variant font-label-code text-label-code">|</span>
+<a class="flex items-center gap-space-xs text-on-surface-variant hover:text-primary font-label-code text-label-code transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[14px]">arrow_back</span>
+<span>← Back to Journal &amp; Threat Feeds</span>
+</a>
+</div>
+<div class="flex items-center gap-space-md">
+<!-- ZERO-KNOWLEDGE CLIENT BOUNDARY STATUS BADGE -->
+<div class="flex items-center gap-space-xs px-2 py-1 bg-secondary-container/10 border border-secondary text-secondary font-telemetry-micro text-telemetry-micro">
+<span class="inline-block w-1.5 h-1.5 bg-secondary animate-pulse"></span>
+<span>ZERO-KNOWLEDGE CLIENT BOUNDARY</span>
+</div>
+<div class="px-2 py-1 bg-surface-container-high border border-outline-variant text-primary font-label-code text-label-code">
+        SEC_ZONE::AUTH
+      </div>
+</div>
+</header>
+<!-- TELEMETRY SUB-STRIP -->
+<aside class="w-full bg-surface-container-low border-b border-outline-variant px-gutter-desktop py-1 flex items-center justify-between font-telemetry-micro text-telemetry-micro text-outline shrink-0 overflow-x-auto">
+<div class="flex items-center gap-space-lg whitespace-nowrap">
+<span>CLIENT_SESSION_ID: <span class="text-primary">0x9B41E_INIT</span></span>
+<span class="text-outline-variant">/</span>
+<span>ENCLAVE: <span class="text-on-surface">SUB-SYS.EPHEMERAL</span></span>
+<span class="text-outline-variant">/</span>
+<span>ASYMMETRIC ENGINE: <span class="text-tertiary">RSA-3072 + ELGAMAL (2048-BIT SCHNORR)</span></span>
+</div>
+<div class="flex items-center gap-space-xs whitespace-nowrap">
+<span class="text-outline">STATUS:</span>
+<span class="text-secondary font-bold">[ENCLAVE_READY]</span>
+</div>
+</aside>
+<!-- MAIN REGISTRATION CANVASES -->
+<main class="flex-1 w-full max-w-5xl mx-auto px-gutter-desktop py-space-xl flex flex-col justify-center">
+<!-- MAIN CENTRAL CARD: Constructivist Editorial Deck -->
+<section class="w-full bg-surface-container-low border border-outline-variant shadow-none relative">
+<!-- Reticle corner ticks (Cypherpunk terminal markers) -->
+<div class="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-primary pointer-events-none"></div>
+<div class="absolute -top-[1px] -right-[1px] w-2 h-2 border-t-2 border-r-2 border-primary pointer-events-none"></div>
+<div class="absolute -bottom-[1px] -left-[1px] w-2 h-2 border-b-2 border-l-2 border-primary pointer-events-none"></div>
+<div class="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-primary pointer-events-none"></div>
+<!-- HEADER SEGMENTED SWITCHER / TABS -->
+<nav class="grid grid-cols-4 border-b border-outline-variant bg-surface-container-lowest font-label-code text-label-code uppercase tracking-wider">
+<button class="py-3 px-space-md text-center text-outline hover:text-on-surface hover:bg-surface-container transition-colors duration-150 border-r border-outline-variant flex items-center justify-center gap-space-xs" type="button">
+<span class="text-outline-variant">01.</span> Sign In
+        </button>
+<button class="py-3 px-space-md text-center bg-surface-container-low text-primary border-b-2 border-primary border-r border-outline-variant flex items-center justify-center gap-space-xs" type="button">
+<span class="text-primary-container">02.</span> Register
+        </button>
+<button class="py-3 px-space-md text-center text-outline hover:text-on-surface hover:bg-surface-container transition-colors duration-150 border-r border-outline-variant flex items-center justify-center gap-space-xs" type="button">
+<span class="text-outline-variant">03.</span> TOTP 2FA
+        </button>
+<button class="py-3 px-space-md text-center text-outline hover:text-on-surface hover:bg-surface-container transition-colors duration-150 flex items-center justify-center gap-space-xs" type="button">
+<span class="text-outline-variant">04.</span> Recovery
+        </button>
+</nav>
+<!-- CARD INTERIOR -->
+<div class="p-panel-padding-spacious flex flex-col gap-space-lg">
+<!-- CARD HEADER / EYEBROW -->
+<header class="border-b border-outline-variant pb-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-telemetry-micro text-telemetry-micro text-primary flex items-center gap-space-xs tracking-widest">
+<span class="inline-block w-1.5 h-1.5 bg-primary"></span>
+              ENCLAVE PROVISIONING // ZERO-KNOWLEDGE PROFILE
+            </span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">CLIENT_SIDE_ONLY</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+            Create your cryptographic identity
+          </h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs max-w-3xl">
+            All profile fields are encrypted on your client device using RSA-3072 before database transmission. No plaintext ever leaves your browser.
+          </p>
+</header>
+<!-- REGISTRATION FORM -->
+<form class="flex flex-col gap-space-md" onsubmit="event.preventDefault();">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- FIELD 1: RESEARCHER HANDLE -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-code text-label-code text-on-surface-variant flex justify-between" for="handle">
+<span>PUBLIC IDENTIFIER (NON-ENCRYPTED)</span>
+<span class="text-outline-variant font-telemetry-micro">REQ // ID</span>
+</label>
+<div class="flex items-stretch bg-surface-container-lowest border border-outline-variant focus-within:border-primary">
+<span class="px-space-md flex items-center text-outline bg-surface-container-high font-label-code border-r border-outline-variant">@</span>
+<input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="handle" placeholder="researcher_handle" type="text" />
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">Publicly visible on intelligence audit logs and commit digests.</span>
+</div>
+<!-- FIELD 2: ENCRYPTED EMAIL / CONTACT -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-code text-label-code text-on-surface-variant flex justify-between items-center" for="contact">
+<span class="flex items-center gap-1">
+<span>ENCRYPTED PROFILE FIELD (RSA-3072 CLIENT-SEALED)</span>
+</span>
+<span class="px-1.5 py-0.5 bg-secondary-container/10 border border-secondary text-secondary font-telemetry-micro text-telemetry-micro">
+                  Encrypted before DB insert
+                </span>
+</label>
+<div class="flex items-stretch bg-surface-container-lowest border border-outline-variant focus-within:border-primary">
+<span class="px-space-md flex items-center text-primary font-label-code border-r border-outline-variant bg-surface-container-high">
+<span class="material-symbols-outlined text-[15px]">lock</span>
+</span>
+<input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="contact" placeholder="researcher@defense.lab" type="email"/>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">Encrypted payload stored as client ciphertext blob. Inaccessible to host operator.</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- FIELD 3: MASTER PASSPHRASE -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex justify-between items-center">
+<label class="font-label-code text-label-code text-on-surface-variant" for="passphrase">MASTER PASSPHRASE (PBKDF2-HMAC-SHA256 DERIVED)</label>
+<span class="font-telemetry-micro text-telemetry-micro text-secondary font-bold">[ENTROPY: 128-BIT HIGH]</span>
+</div>
+<div class="flex items-stretch bg-surface-container-lowest border border-outline-variant focus-within:border-primary">
+<input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="passphrase" type="password" />
+<div class="flex items-center px-space-md border-l border-outline-variant bg-surface-container-high text-outline">
+<span class="material-symbols-outlined text-[15px]">visibility</span>
+</div>
+</div>
+<!-- Strength Bars -->
+<div class="grid grid-cols-4 gap-1 mt-1">
+<div class="h-1 bg-secondary"></div>
+<div class="h-1 bg-secondary"></div>
+<div class="h-1 bg-secondary"></div>
+<div class="h-1 bg-secondary"></div>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">PBKDF2-HMAC-SHA256: 600,000 salt iterations derived client-side to seal root vault.</span>
+</div>
+<!-- FIELD 4: CONFIRM PASSPHRASE -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex justify-between items-center">
+<label class="font-label-code text-label-code text-on-surface-variant" for="confirm-passphrase">CONFIRM MASTER PASSPHRASE</label>
+<span class="font-telemetry-micro text-telemetry-micro text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> MATCH_CONFIRMED
+                </span>
+</div>
+<div class="flex items-stretch bg-surface-container-lowest border border-secondary focus-within:border-secondary">
+<input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="confirm-passphrase" type="password" />
+<div class="flex items-center px-space-md border-l border-outline-variant bg-surface-container-high text-secondary">
+<span class="material-symbols-outlined text-[15px]">verified_user</span>
+</div>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">Zero server storage. Unrecoverable if forgotten. Local key unwrapping only.</span>
+</div>
+</div>
+<!-- KEYPAIR GENERATION & PROVISIONING PREVIEW BOX -->
+<div class="mt-space-xs bg-surface-container-lowest border border-outline-variant p-panel-padding-compact">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2 mb-space-sm">
+<div class="font-label-code text-label-code text-primary flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[15px]">key</span>
+<span>Automated In-Enclave Key Provisioning:</span>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-outline font-normal">EXEC_TIME: ~180MS</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm font-label-code text-label-code">
+<!-- Step 1 -->
+<div class="flex items-start gap-space-xs bg-surface-container p-2 border border-outline-variant/60">
+<span class="text-secondary font-bold">[✔]</span>
+<div class="flex flex-col">
+<span class="text-on-surface">Generate RSA-3072 Identity Keypair</span>
+<span class="text-outline font-telemetry-micro text-telemetry-micro">~128-bit security, PKCS#1 v1.5</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-space-xs bg-surface-container p-2 border border-outline-variant/60">
+<span class="text-secondary font-bold">[✔]</span>
+<div class="flex flex-col">
+<span class="text-on-surface">Generate ElGamal Schnorr Group Pair</span>
+<span class="text-outline font-telemetry-micro text-telemetry-micro">2048-bit prime, 256-bit subgroup</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex items-start gap-space-xs bg-surface-container p-2 border border-outline-variant/60">
+<span class="text-secondary font-bold">[✔]</span>
+<div class="flex flex-col">
+<span class="text-on-surface">Seed RFC 6238 TOTP Secret</span>
+<span class="text-outline font-telemetry-micro text-telemetry-micro">Dynamic HMAC-SHA256</span>
+</div>
+</div>
+</div>
+<!-- Security Notice Box -->
+<div class="mt-space-sm bg-surface-container-high border-l-2 border-primary p-2 flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[16px] shrink-0 mt-0.5">shield</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<strong class="text-primary font-bold">Zero-Knowledge Guarantee:</strong> Your private keys are wrapped and stored client-side or wrapped with your master passphrase. Server administrators have zero access.
+              </p>
+</div>
+</div>
+<!-- PRIMARY ACTION TRIGGER -->
+<div class="pt-space-xs">
+<button class="w-full bg-primary-container text-on-primary-fixed hover:bg-primary font-label-code text-label-code py-3 px-space-lg flex items-center justify-center gap-space-sm font-bold uppercase tracking-wider transition-colors duration-150 cursor-pointer" type="submit">
+<span>GENERATE KEYPAIRS &amp; PROCEED TO 2FA SETUP</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- BOTTOM CARD BADGES -->
+<div class="pt-space-sm border-t border-outline-variant flex flex-wrap items-center justify-between gap-space-xs font-telemetry-micro text-telemetry-micro text-outline">
+<div class="flex items-center gap-1 px-2 py-1 bg-surface-container border border-outline-variant">
+<span class="material-symbols-outlined text-[13px] text-tertiary">memory</span>
+<span class="text-on-surface-variant">PURE ASYMMETRIC:</span>
+<span class="text-primary">RSA-3072 + ElGamal 2048</span>
+</div>
+<div class="flex items-center gap-1 px-2 py-1 bg-surface-container border border-outline-variant">
+<span class="material-symbols-outlined text-[13px] text-secondary">verified</span>
+<span class="text-on-surface-variant">ZERO THIRD-PARTY LIBS:</span>
+<span class="text-secondary">Pure Python &amp; Native WebCrypto</span>
+</div>
+<div class="flex items-center gap-1 px-2 py-1 bg-surface-container border border-outline-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">phonelink_lock</span>
+<span class="text-on-surface-variant">RFC 6238 COMPLIANT:</span>
+<span class="text-on-surface">TOTP Setup Enforced</span>
+</div>
+</div>
+</form>
+</div>
+</section>
+</main>
+<!-- SHARED COMPONENT FOOTER -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-gutter-desktop py-panel-padding-compact max-w-full border-t border-outline-variant bg-surface-container-lowest gap-space-sm mt-auto">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">
+      © 2025 CIPHERDECK JOURNAL. ZERO-KNOWLEDGE PAYLOAD ARCHITECTURE // RFC 6238 COMPLIANT. PURE ASYMMETRIC STATE.
+    </div>
+<nav class="flex items-center gap-space-md flex-wrap font-label-code text-label-code">
+<a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">ROOT_CERT</a>
+<a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">PGP_KEYS</a>
+<a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">HMAC_VALIDATION</a>
+<a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">THREAT_FEED</a>
+<a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">CANARY_LOG</a>
+</nav>
+</footer>
+<script src="/assets/api.js?v=3"></script>
+<script src="/assets/app-register.js?v=3"></script>
+</body></html>

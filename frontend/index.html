@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CipherDeck Journal — Asymmetric Threat Intelligence &amp; Cryptography Publication</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#0f131c",
+            "surface-dim": "#0a0e16",
+            "surface-container": "#181c24",
+            "surface-container-high": "#202530",
+            "surface-container-highest": "#282d38",
+            "outline": "#88929b",
+            "outline-variant": "#282d38",
+            "primary": "#89ceff",
+            "primary-container": "#0ea5e9",
+            "on-primary-container": "#002b40",
+            "on-surface": "#dfe2ee",
+            "on-surface-variant": "#9ba6b5",
+            "secondary": "#4edea3",
+            "tertiary": "#4cd7f6",
+            "error": "#ffb4ab"
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+            display: ["Space Grotesk", "sans-serif"],
+            mono: ["Space Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-sans antialiased selection:bg-primary-container selection:text-white leading-relaxed">
+<!-- TOP APP BAR -->
+<header class="sticky top-0 z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant">
+<div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+<!-- Brand -->
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-2.5 text-lg font-bold font-display tracking-tight text-on-surface hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-primary text-xl">shield_locked</span>
+<span>CipherDeck <span class="text-primary font-normal">Journal</span></span>
+</a>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-7 text-sm font-medium text-on-surface-variant">
+<a class="text-on-surface hover:text-primary transition-colors" href="#featured">Articles</a>
+<a class="hover:text-primary transition-colors" href="#feed">Threat Feeds</a>
+<a class="hover:text-primary transition-colors" href="#architecture">Cryptography</a>
+<a class="hover:text-primary transition-colors" href="#how-it-works">Architecture &amp; Specs</a>
+</nav>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-3">
+<a class="text-sm font-medium text-on-surface-variant hover:text-on-surface px-3 py-1.5 transition-colors" href="#subscribe">
+          Sign In
+        </a>
+<a class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary hover:bg-sky-400 text-surface-dim font-semibold text-sm transition-all shadow-sm" href="#subscribe">
+<span class="material-symbols-outlined text-base">key</span>
+<span>Read Encrypted</span>
+</a>
+</div>
+</div>
+</header>
+<main>
+<!-- HERO SECTION -->
+<section class="border-b border-outline-variant py-20 px-6 bg-gradient-to-b from-surface to-surface-dim">
+<div class="max-w-4xl mx-auto text-center space-y-7">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-outline-variant bg-surface-container text-xs font-mono text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span>Open Cryptographic Intelligence • No Third-Party Dependencies</span>
+</div>
+<h1 class="text-4xl sm:text-5xl md:text-6xl font-bold font-display tracking-tight text-on-surface leading-[1.15]">
+          A zero-knowledge publication and intelligence feed built on <span class="text-primary">pure asymmetric cryptography</span>.
+        </h1>
+<p class="text-lg sm:text-xl text-on-surface-variant max-w-2xl mx-auto font-normal leading-relaxed">
+          Publish and read verifiable threat intelligence, security writeups, and encrypted dispatches without trusting a centralized database or proprietary crypto libraries.
+        </p>
+<div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+<a class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-primary hover:bg-sky-400 text-surface-dim font-semibold text-sm transition-all shadow-sm" href="#feed">
+<span class="material-symbols-outlined text-lg">auto_stories</span>
+<span>Browse Recent Articles</span>
+</a>
+<a class="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-outline-variant hover:border-outline bg-surface-container/60 hover:bg-surface-container text-on-surface font-medium text-sm transition-all" href="#architecture">
+<span class="material-symbols-outlined text-lg">menu_book</span>
+<span>Read Architecture Primer</span>
+</a>
+</div>
+<!-- Trust summary strip -->
+<div class="pt-8 border-t border-outline-variant/60 flex flex-wrap items-center justify-center gap-y-2 gap-x-8 text-xs font-mono text-on-surface-variant">
+<span class="flex items-center gap-1.5">
+<span class="text-secondary">●</span> Pure RSA-3072 &amp; ElGamal
+          </span>
+<span class="flex items-center gap-1.5">
+<span class="text-secondary">●</span> HMAC-SHA256 Verified Feeds
+          </span>
+<span class="flex items-center gap-1.5">
+<span class="text-secondary">●</span> Zero Plaintext at Rest
+          </span>
+<span class="flex items-center gap-1.5">
+<span class="text-secondary">●</span> RFC 6238 TOTP Native
+          </span>
+</div>
+</div>
+</section>
+<!-- FEATURED ARTICLE LEAD -->
+<section class="py-16 px-6 border-b border-outline-variant" id="featured">
+<div class="max-w-6xl mx-auto space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="text-xs font-mono uppercase tracking-widest text-primary font-bold">Featured Lead Story</h2>
+<span class="text-xs font-mono text-on-surface-variant">VOL. 04 — DISPATCH #219</span>
+</div>
+<article class="p-8 sm:p-10 rounded-2xl border border-outline-variant bg-surface-container/50 hover:bg-surface-container/70 transition-all group">
+<div class="max-w-3xl space-y-4">
+<!-- Meta row -->
+<div class="flex flex-wrap items-center gap-3 text-xs text-on-surface-variant font-medium">
+<span class="text-primary font-semibold">Cryptography &amp; Standards</span>
+<span>•</span>
+<span>6 min read</span>
+<span>•</span>
+<span>March 2025</span>
+<span>•</span>
+<span class="font-mono text-on-surface">Author: 0x3F9A</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary/10 border border-secondary/30 text-secondary text-[11px] font-mono ml-auto">
+<span class="material-symbols-outlined text-xs">verified</span>
+                HMAC Integrity Verified
+              </span>
+</div>
+<!-- Title -->
+<h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold font-display tracking-tight text-on-surface group-hover:text-primary transition-colors leading-tight">
+<a href="#">Why We Banned Symmetric Ciphers: The Case for Strict Asymmetric Storage in Threat Feeds</a>
+</h3>
+<!-- Excerpt -->
+<p class="text-base sm:text-lg text-on-surface-variant leading-relaxed">
+              Traditional threat intel networks rely heavily on symmetric shared secrets (AES-GCM, ChaCha20) for speed, opening catastrophic insider risk when server nodes are subpoenaed or infiltrated. By converting our persistent datastores strictly to dual-layer RSA-3072 vaults and ElGamal Schnorr envelopes, server administrators are mathematically blinded from viewing payloads or tampering with indicators of compromise without instant cryptographic alarm.
+            </p>
+<!-- Read more footer -->
+<div class="pt-4 flex items-center gap-4">
+<a class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-sky-300 transition-colors" href="#">
+<span>Continue reading complete analysis</span>
+<span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+<span class="text-xs font-mono text-outline">P-Field: 3072-bit compute</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- RECENT ARTICLES & DISPATCHES FEED -->
+<section class="py-16 px-6 border-b border-outline-variant bg-surface-dim/40" id="feed">
+<div class="max-w-6xl mx-auto space-y-10">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-outline-variant pb-5">
+<div>
+<span class="text-xs font-mono uppercase tracking-widest text-primary font-bold block mb-1">Peer Dispatches</span>
+<h2 class="text-2xl sm:text-3xl font-bold font-display text-on-surface tracking-tight">Recent Threat Feeds &amp; Cryptographic Research</h2>
+</div>
+<p class="text-sm text-on-surface-variant max-w-sm font-normal">
+            Independent security writeups, verifiable IoCs, and protocol evaluations sealed with client-side signatures.
+          </p>
+</div>
+<!-- Blog Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<article class="p-6 rounded-xl border border-outline-variant bg-surface flex flex-col justify-between hover:border-outline/80 transition-all group">
+<div class="space-y-3.5">
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<span class="px-2.5 py-0.5 rounded bg-surface-container text-primary font-mono font-medium">IoC Dispatches</span>
+<span>March 12 • 4 min</span>
+</div>
+<h3 class="text-lg font-bold font-display text-on-surface group-hover:text-primary transition-colors leading-snug">
+<a href="#">Deconstructing Stealth C2 Channels Over Subgroup Nonce Leakage</a>
+</h3>
+<p class="text-sm text-on-surface-variant line-clamp-3 leading-relaxed">
+                Analysis of repeated ephemeral nonces in unverified peer telemetry packets and how zero-knowledge blinding prevents traffic fingerprinting.
+              </p>
+</div>
+<div class="pt-5 mt-4 border-t border-outline-variant/60 flex items-center justify-between text-xs">
+<span class="font-mono text-on-surface-variant">By <span class="text-on-surface">k_val_audit</span></span>
+<span class="text-secondary font-mono flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                HMAC valid
+              </span>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="p-6 rounded-xl border border-outline-variant bg-surface flex flex-col justify-between hover:border-outline/80 transition-all group">
+<div class="space-y-3.5">
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<span class="px-2.5 py-0.5 rounded bg-surface-container text-primary font-mono font-medium">Architecture</span>
+<span>March 08 • 8 min</span>
+</div>
+<h3 class="text-lg font-bold font-display text-on-surface group-hover:text-primary transition-colors leading-snug">
+<a href="#">Building Zero-Dependency Cryptographic Utilities in Pure Python</a>
+</h3>
+<p class="text-sm text-on-surface-variant line-clamp-3 leading-relaxed">
+                A technical dissection of implementing arbitrary precision modular exponentiation and Miller-Rabin primality testing without OpenSSL or libcrypto bindings.
+              </p>
+</div>
+<div class="pt-5 mt-4 border-t border-outline-variant/60 flex items-center justify-between text-xs">
+<span class="font-mono text-on-surface-variant">By <span class="text-on-surface">py_hardened</span></span>
+<span class="text-secondary font-mono flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                HMAC valid
+              </span>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="p-6 rounded-xl border border-outline-variant bg-surface flex flex-col justify-between hover:border-outline/80 transition-all group">
+<div class="space-y-3.5">
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<span class="px-2.5 py-0.5 rounded bg-surface-container text-primary font-mono font-medium">Identity &amp; Auth</span>
+<span>March 02 • 5 min</span>
+</div>
+<h3 class="text-lg font-bold font-display text-on-surface group-hover:text-primary transition-colors leading-snug">
+<a href="#">Mandatory RFC 6238 TOTP &amp; 90-Day Ephemeral Key Lifetimes</a>
+</h3>
+<p class="text-sm text-on-surface-variant line-clamp-3 leading-relaxed">
+                Why standard password resets are an architectural anti-pattern for sensitive threat actors. How automated key rotation preserves long-term forward secrecy.
+              </p>
+</div>
+<div class="pt-5 mt-4 border-t border-outline-variant/60 flex items-center justify-between text-xs">
+<span class="font-mono text-on-surface-variant">By <span class="text-on-surface">rel_sec_team</span></span>
+<span class="text-secondary font-mono flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                HMAC valid
+              </span>
+</div>
+</article>
+</div>
+</div>
+</section>
+<!-- HOW IT WORKS (FOR READERS & WRITERS) -->
+<section class="py-16 px-6 border-b border-outline-variant" id="how-it-works">
+<div class="max-w-6xl mx-auto space-y-12">
+<div class="max-w-2xl space-y-2">
+<span class="text-xs font-mono uppercase tracking-widest text-primary font-bold">Platform Foundations</span>
+<h2 class="text-2xl sm:text-3xl font-bold font-display text-on-surface tracking-tight">How It Works for Readers &amp; Publishers</h2>
+<p class="text-sm sm:text-base text-on-surface-variant">
+            A privacy-preserving publication workflow that guarantees tamper resistance and mathematical confidentiality.
+          </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Step 1 -->
+<div class="space-y-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined text-xl">lock_open</span>
+</div>
+<h3 class="text-lg font-bold text-on-surface font-display">1. Client-Side Sealing</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+              Dispatches and threat indicators are encrypted right inside your client environment using the recipient's public parameters before any network packet transmits.
+            </p>
+</div>
+<!-- Step 2 -->
+<div class="space-y-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center text-secondary mb-4">
+<span class="material-symbols-outlined text-xl">verified</span>
+</div>
+<h3 class="text-lg font-bold text-on-surface font-display">2. Tamper-Evident Feeds</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+              Every broadcast carries an authentic HMAC-SHA256 signature. Any server-side tampering instantly causes verification to fail, quarantining the payload immediately.
+            </p>
+</div>
+<!-- Step 3 -->
+<div class="space-y-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center text-tertiary mb-4">
+<span class="material-symbols-outlined text-xl">timer</span>
+</div>
+<h3 class="text-lg font-bold text-on-surface font-display">3. Zero-Trace Sessions</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+              Keys rotate every 90 days, sensitive sessions expire rapidly, and plaintexts are reconstructed strictly in authenticated RAM buffers—leaving zero permanent storage trails.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- ARCHITECTURE PRIMER / SPEC SUMMARY -->
+<section class="py-16 px-6 border-b border-outline-variant bg-surface-dim/40" id="architecture">
+<div class="max-w-6xl mx-auto space-y-8">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-outline-variant pb-4 gap-4">
+<div>
+<span class="text-xs font-mono uppercase tracking-widest text-primary font-bold block mb-1">Reference Standard</span>
+<h2 class="text-2xl font-bold font-display text-on-surface tracking-tight">Cryptographic Baseline Matrix</h2>
+</div>
+<div class="text-xs font-mono text-on-surface-variant">
+            NIST SP 800-56B • RFC 6238 • RFC 2104 Compliant
+          </div>
+</div>
+<div class="overflow-x-auto rounded-xl border border-outline-variant bg-surface">
+<table class="w-full text-left text-sm">
+<thead>
+<tr class="border-b border-outline-variant bg-surface-container/60 text-xs font-mono text-on-surface-variant uppercase tracking-wider">
+<th class="py-3.5 px-6 font-semibold">Primitive</th>
+<th class="py-3.5 px-6 font-semibold">Implementation</th>
+<th class="py-3.5 px-6 font-semibold">Security Level</th>
+<th class="py-3.5 px-6 font-semibold text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/60 font-sans text-on-surface-variant">
+<tr class="hover:bg-surface-container/30 transition-colors">
+<td class="py-4 px-6 font-medium text-on-surface">Identity Vault</td>
+<td class="py-4 px-6 font-mono text-xs text-primary">RSA-3072 (PKCS#1 v1.5)</td>
+<td class="py-4 px-6 text-xs">128-bit symmetric equivalence</td>
+<td class="py-4 px-6 text-right font-mono text-xs text-secondary font-medium">Standard Active</td>
+</tr>
+<tr class="hover:bg-surface-container/30 transition-colors">
+<td class="py-4 px-6 font-medium text-on-surface">Message Exchange</td>
+<td class="py-4 px-6 font-mono text-xs text-primary">ElGamal over 2048-bit Schnorr</td>
+<td class="py-4 px-6 text-xs">256-bit prime subgroup DLP</td>
+<td class="py-4 px-6 text-right font-mono text-xs text-secondary font-medium">Standard Active</td>
+</tr>
+<tr class="hover:bg-surface-container/30 transition-colors">
+<td class="py-4 px-6 font-medium text-on-surface">Integrity Verification</td>
+<td class="py-4 px-6 font-mono text-xs text-primary">HMAC-SHA256 (RFC 2104)</td>
+<td class="py-4 px-6 text-xs">Full 256-bit collision barrier</td>
+<td class="py-4 px-6 text-right font-mono text-xs text-secondary font-medium">Enforced 100%</td>
+</tr>
+<tr class="hover:bg-surface-container/30 transition-colors">
+<td class="py-4 px-6 font-medium text-on-surface">Identity Authentication</td>
+<td class="py-4 px-6 font-mono text-xs text-primary">PBKDF2-HMAC-SHA256 + TOTP</td>
+<td class="py-4 px-6 text-xs">Dynamic high-cost stretch iterations</td>
+<td class="py-4 px-6 text-right font-mono text-xs text-secondary font-medium">Mandatory</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- NEWSLETTER / PUBLISHER CTA -->
+<section class="py-20 px-6" id="subscribe">
+<div class="max-w-4xl mx-auto rounded-2xl border border-outline-variant bg-gradient-to-br from-surface-container to-surface p-8 sm:p-12 text-center space-y-6">
+<span class="text-xs font-mono uppercase tracking-widest text-primary font-bold">Encrypted Syndicate</span>
+<h2 class="text-3xl sm:text-4xl font-bold font-display text-on-surface tracking-tight">
+          Join the Zero-Knowledge Intelligence Feed
+        </h2>
+<p class="text-base sm:text-lg text-on-surface-variant max-w-xl mx-auto leading-relaxed">
+          Receive peer-reviewed threat analyses in your inbox or generate your client asymmetric keypair to publish verifiable dispatches anonymously.
+        </p>
+<form class="max-w-md mx-auto flex flex-col sm:flex-row gap-3 pt-2" onsubmit="event.preventDefault();">
+<input class="flex-1 px-4 py-3 rounded-lg bg-surface-dim border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary text-sm text-on-surface placeholder:text-outline outline-none" placeholder="researcher@domain.org" required="" type="email"/>
+<button class="px-5 py-3 rounded-lg bg-primary hover:bg-sky-400 text-surface-dim font-semibold text-sm transition-all whitespace-nowrap" type="submit">
+            Subscribe to Feed
+          </button>
+</form>
+<p class="text-xs text-on-surface-variant font-mono">
+          Zero trackers • No third-party email scripts • Open CLI bindings available
+        </p>
+</div>
+</section>
+</main>
+<!-- CLEAN EDITORIAL FOOTER -->
+<footer class="border-t border-outline-variant bg-surface-dim py-12 px-6">
+<div class="max-w-6xl mx-auto space-y-10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<!-- Brand Info -->
+<div class="space-y-3 md:col-span-1">
+<div class="flex items-center gap-2 text-base font-bold font-display tracking-tight text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg">shield_locked</span>
+<span>CipherDeck Journal</span>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed">
+            An open editorial platform and verifiable intelligence feed dedicated to pure asymmetric zero-knowledge architectures.
+          </p>
+</div>
+<!-- Col 1: Editorial -->
+<div class="space-y-2.5 text-xs">
+<h4 class="font-mono uppercase font-bold text-on-surface tracking-wider">Editorial</h4>
+<ul class="space-y-2 text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#featured">Featured Analysis</a></li>
+<li><a class="hover:text-primary transition-colors" href="#feed">Threat Feed Wire</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Cryptographic Proofs</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Author Submission Guidelines</a></li>
+</ul>
+</div>
+<!-- Col 2: Architecture & Specs -->
+<div class="space-y-2.5 text-xs">
+<h4 class="font-mono uppercase font-bold text-on-surface tracking-wider">Specifications</h4>
+<ul class="space-y-2 text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#architecture">NIST SP 800-56B Baseline</a></li>
+<li><a class="hover:text-primary transition-colors" href="#architecture">ElGamal over Schnorr Groups</a></li>
+<li><a class="hover:text-primary transition-colors" href="#architecture">HMAC-SHA256 Integrity Verification</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">GitHub Repository (Pure Python)</a></li>
+</ul>
+</div>
+<!-- Col 3: Feeds & Contact -->
+<div class="space-y-2.5 text-xs">
+<h4 class="font-mono uppercase font-bold text-on-surface tracking-wider">Distribution</h4>
+<ul class="space-y-2 text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Verifiable RSS / JSON Feed</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">PGP Public Keyring</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Security Disclosures</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Audit Certificate Log</a></li>
+</ul>
+</div>
+</div>
+<!-- Bottom Bar -->
+<div class="pt-8 border-t border-outline-variant/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant">
+<div>
+          © 2025 CipherDeck Journal. Published under Open Zero-Knowledge Cryptographic Standards.
+        </div>
+<div class="flex items-center gap-6 font-mono text-[11px]">
+<span>Commit: <span class="text-on-surface">e7f09a3</span></span>
+<span>Zero Plaintext at Rest</span>
+<span class="text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            All Feeds Nominal
+          </span>
+</div>
+</div>
+</div>
+</footer>
+<script src="/assets/api.js?v=3"></script>
+<script src="/assets/app-landing.js?v=3"></script>
+</body></html>

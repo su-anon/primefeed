@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CIPHERDECK // JOURNAL - Cryptographic Authentication Portal</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "outline": "#88929b",
+            "inverse-primary": "#006591",
+            "surface-container-low": "#181c24",
+            "tertiary-fixed-dim": "#4cd7f6",
+            "on-secondary": "#003824",
+            "secondary": "#4edea3",
+            "outline-variant": "#3e4850",
+            "surface-container-lowest": "#0a0e16",
+            "error-container": "#93000a",
+            "on-secondary-fixed-variant": "#005236",
+            "secondary-fixed": "#6ffbbe",
+            "inverse-on-surface": "#2c3039",
+            "surface-dim": "#0f131c",
+            "secondary-container": "#00a572",
+            "on-error-container": "#ffdad6",
+            "surface-container-high": "#262a33",
+            "on-tertiary-fixed-variant": "#004e5c",
+            "surface-variant": "#31353e",
+            "on-tertiary-fixed": "#001f26",
+            "tertiary-container": "#00aac6",
+            "surface-container": "#1c2028",
+            "on-secondary-fixed": "#002113",
+            "surface": "#0f131c",
+            "primary-fixed": "#c9e6ff",
+            "on-surface-variant": "#bec8d2",
+            "error": "#ffb4ab",
+            "tertiary": "#4cd7f6",
+            "on-tertiary-container": "#003943",
+            "secondary-fixed-dim": "#4edea3",
+            "on-secondary-container": "#00311f",
+            "on-background": "#dfe2ee",
+            "on-primary-fixed-variant": "#004c6e",
+            "surface-bright": "#353942",
+            "primary-container": "#0ea5e9",
+            "on-surface": "#dfe2ee",
+            "tertiary-fixed": "#acedff",
+            "on-tertiary": "#003640",
+            "on-primary-fixed": "#001e2f",
+            "on-primary": "#00344d",
+            "primary": "#89ceff",
+            "surface-container-highest": "#31353e",
+            "surface-tint": "#89ceff",
+            "background": "#0f131c",
+            "on-primary-container": "#003751",
+            "on-error": "#690005",
+            "inverse-surface": "#dfe2ee",
+            "primary-fixed-dim": "#89ceff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0px",
+            "sm": "0px",
+            "md": "0px",
+            "lg": "0px",
+            "xl": "0px",
+            "full": "0px"
+          },
+          "spacing": {
+            "gutter-desktop": "16px",
+            "panel-padding-compact": "12px",
+            "gutter-mobile": "12px",
+            "panel-padding-spacious": "24px",
+            "grid-step": "4px",
+            "space-2xs": "2px",
+            "space-md": "16px",
+            "space-xs": "4px",
+            "space-lg": "24px",
+            "space-sm": "8px",
+            "space-3xl": "64px",
+            "space-xl": "32px",
+            "space-2xl": "48px"
+          },
+          "fontFamily": {
+            "body-lg": ["Space Mono", "monospace"],
+            "body-sm": ["Space Mono", "monospace"],
+            "body-md": ["Space Mono", "monospace"],
+            "label-code": ["Space Mono", "monospace"],
+            "headline-lg": ["Space Grotesk", "sans-serif"],
+            "telemetry-micro": ["Space Mono", "monospace"],
+            "headline-md": ["Space Grotesk", "sans-serif"],
+            "display-xl-mobile": ["Space Grotesk", "sans-serif"],
+            "headline-sm": ["Space Grotesk", "sans-serif"],
+            "display-xl": ["Space Grotesk", "sans-serif"],
+            "headline-lg-mobile": ["Space Grotesk", "sans-serif"]
+          },
+          "fontSize": {
+            "body-lg": ["15px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "body-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "400" }],
+            "body-md": ["13px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-code": ["12px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "telemetry-micro": ["9px", { "lineHeight": "12px", "letterSpacing": "0.12em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display-xl-mobile": ["32px", { "lineHeight": "36px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" }],
+            "display-xl": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom terminal accents & subtle cursor */
+    .terminal-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background-color: #0ea5e9;
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .custom-input:focus {
+      outline: none;
+      border-color: #0ea5e9;
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface min-h-screen flex flex-col font-body-md selection:bg-primary-container selection:text-on-primary-container antialiased">
+<!-- ================= TOP NAVIGATION BAR (SHARED COMPONENT) ================= -->
+<header class="flex justify-between items-center w-full px-gutter-desktop max-w-full h-14 border-b border-outline-variant bg-surface-container-lowest sticky top-0 z-50">
+<div class="flex items-center space-x-space-md">
+<a class="font-headline-sm text-headline-sm font-semibold tracking-wider text-primary uppercase flex items-center gap-space-sm" href="#">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="lock_reset">lock_reset</span>
+<span>CIPHERDECK // JOURNAL</span>
+</a>
+<span class="hidden md:inline-block text-outline-variant text-sm font-label-code">/</span>
+<a class="hidden md:flex items-center text-outline hover:text-primary font-label-code text-body-sm transition-colors duration-150 gap-space-xs" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_back">arrow_back</span>
+<span>Back to Journal &amp; Threat Feeds</span>
+</a>
+</div>
+<div class="flex items-center space-x-space-sm">
+<div class="hidden sm:flex items-center gap-space-xs px-space-sm py-space-2xs border border-secondary text-secondary bg-secondary/10 font-telemetry-micro text-telemetry-micro uppercase">
+<span class="w-1.5 h-1.5 bg-secondary inline-block animate-pulse"></span>
+<span>Zero-Knowledge Client Boundary</span>
+</div>
+<div class="flex items-center border border-outline-variant px-space-sm py-1 font-label-code text-body-sm text-outline">
+<span class="material-symbols-outlined text-sm mr-1" data-icon="terminal">terminal</span>
+<span>SEC_ZONE::AUTH</span>
+</div>
+</div>
+</header>
+<!-- ================= SUBHEADER / BREADCRUMB TELEMETRY ================= -->
+<div class="w-full bg-surface-dim border-b border-outline-variant px-gutter-desktop py-space-xs flex justify-between items-center text-outline font-telemetry-micro text-telemetry-micro uppercase">
+<div class="flex items-center space-x-space-md">
+<span class="text-primary font-bold">CLIENT_SESSION_ID: 0x9B41E_INIT</span>
+<span class="hidden md:inline">ENCLAVE: SUB-SYS.EPHEMERAL</span>
+<span class="hidden lg:inline">HMAC_SCHEME: SHA256_RFC2104</span>
+</div>
+<div class="flex items-center space-x-space-md">
+<span>ASYMMETRIC LAYER: SECP256K1 + RSA-3072</span>
+<span class="text-secondary">[CLIENT_READY]</span>
+</div>
+</div>
+<!-- ================= MAIN AUTHENTICATION STAGE ================= -->
+<main class="flex-grow flex flex-col items-center justify-center p-gutter-mobile md:p-space-xl relative">
+<!-- Background Grid Crosshairs & Wireframe Lines (Architectural Constructivism) -->
+<div class="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(to_right,#1e2638_1px,transparent_1px),linear-gradient(to_bottom,#1e2638_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+<div class="w-full max-w-2xl bg-surface-dim border border-outline-variant relative z-10 my-space-lg shadow-2xl">
+<!-- Reticle corner ticks -->
+<div class="absolute -top-1.5 -left-1.5 text-primary text-xs select-none font-label-code">+</div>
+<div class="absolute -top-1.5 -right-1.5 text-primary text-xs select-none font-label-code">+</div>
+<div class="absolute -bottom-1.5 -left-1.5 text-primary text-xs select-none font-label-code">+</div>
+<div class="absolute -bottom-1.5 -right-1.5 text-primary text-xs select-none font-label-code">+</div>
+<!-- Stage Header Bar -->
+<div class="flex justify-between items-center px-panel-padding-spacious py-space-sm border-b border-outline-variant bg-surface-container-lowest">
+<div class="flex items-center gap-space-sm">
+<span class="font-telemetry-micro text-telemetry-micro text-outline uppercase tracking-widest">CIPHERDECK_PORTAL_GATEWAY</span>
+<span class="text-outline-variant">::</span>
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase">STATUS: UNBOUND</span>
+</div>
+<div class="font-telemetry-micro text-telemetry-micro text-outline uppercase">
+          SPEC: RFC-6238 / ASYM-03
+        </div>
+</div>
+<!-- Segmented Navigation Switcher (Preview Controller) -->
+<div class="grid grid-cols-2 md:grid-cols-4 border-b border-outline-variant bg-surface-container-low font-label-code text-label-code uppercase text-center">
+<button class="py-space-sm px-2 text-primary border-b-2 border-primary bg-surface-dim font-bold flex items-center justify-center gap-1" id="tab-signin" onclick="switchStage('signin')">
+<span class="material-symbols-outlined text-sm" data-icon="login">login</span>
+<span>1. Sign In</span>
+</button>
+<button class="py-space-sm px-2 text-outline hover:text-on-surface border-b-2 border-transparent transition-colors flex items-center justify-center gap-1" id="tab-register" onclick="switchStage('register')">
+<span class="material-symbols-outlined text-sm" data-icon="person_add">person_add</span>
+<span>2. Register</span>
+</button>
+<button class="py-space-sm px-2 text-outline hover:text-on-surface border-b-2 border-transparent transition-colors flex items-center justify-center gap-1" id="tab-totp" onclick="switchStage('totp')">
+<span class="material-symbols-outlined text-sm" data-icon="verified_user">verified_user</span>
+<span>3. TOTP 2FA</span>
+</button>
+<button class="py-space-sm px-2 text-outline hover:text-on-surface border-b-2 border-transparent transition-colors flex items-center justify-center gap-1" id="tab-recovery" onclick="switchStage('recovery')">
+<span class="material-symbols-outlined text-sm" data-icon="key">key</span>
+<span>4. Recovery</span>
+</button>
+</div>
+<!-- ================= PANEL 1: SIGN IN FLOW ================= -->
+<div class="p-panel-padding-spacious block" id="panel-signin">
+<div class="mb-space-lg">
+<div class="flex items-center gap-space-xs text-primary font-label-code text-body-sm mb-space-2xs uppercase tracking-wider">
+<span class="w-2 h-2 bg-primary inline-block"></span>
+<span>Identity Vault Decryption</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">Access your encrypted workspace</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+            Authenticate your cryptographic identity. Sessions are HMAC-signed with 256-bit entropy.
+          </p>
+</div>
+<form class="space-y-space-md" onsubmit="event.preventDefault(); switchStage('totp');">
+<!-- Username / Handle -->
+<div>
+<div class="flex justify-between items-center mb-space-xs">
+<label class="font-label-code text-label-code text-on-surface uppercase" for="signin-handle">
+                Researcher Handle / Public Identity
+              </label>
+<span class="font-telemetry-micro text-telemetry-micro text-outline uppercase">pub_uid:req</span>
+</div>
+<div class="relative flex items-center border border-outline-variant bg-surface-container-lowest focus-within:border-primary">
+<span class="px-space-sm font-label-code text-body-sm text-outline border-r border-outline-variant select-none">@</span>
+<input class="custom-input w-full bg-transparent p-space-sm font-label-code text-body-md text-on-surface placeholder:text-outline border-0 focus:ring-0" id="signin-handle" required="" type="text" />
+</div>
+</div>
+<!-- Master Password -->
+<div>
+<div class="flex justify-between items-center mb-space-xs">
+<label class="font-label-code text-label-code text-on-surface uppercase" for="signin-pwd">
+                Master Decryption Passphrase
+              </label>
+<button class="font-telemetry-micro text-telemetry-micro text-primary hover:underline uppercase" onclick="switchStage('recovery')" type="button">
+                Forgot Password or Lost Key?
+              </button>
+</div>
+<div class="relative flex items-center border border-outline-variant bg-surface-container-lowest focus-within:border-primary">
+<span class="px-space-sm font-label-code text-body-sm text-outline border-r border-outline-variant select-none">KEY</span>
+<input class="custom-input w-full bg-transparent p-space-sm font-label-code text-body-md text-on-surface placeholder:text-outline border-0 focus:ring-0" id="signin-pwd" required="" type="password" />
+</div>
+</div>
+<!-- Client-side Security Notice -->
+<div class="p-space-sm border border-outline-variant bg-surface-container-lowest/60 flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-base mt-0.5" data-icon="security">security</span>
+<div class="font-body-sm text-body-sm text-outline">
+<span class="text-on-surface font-semibold">Zero-Knowledge Enclave Notice:</span> PBKDF2-HMAC-SHA256 evaluated locally with high-cost salt nonce (600,000 iterations). Your plaintext passphrase never transits the wire.
+            </div>
+</div>
+<!-- Options -->
+<div class="flex items-center justify-between pt-space-xs">
+<label class="flex items-center gap-space-sm cursor-pointer select-none">
+<input checked="" class="w-3.5 h-3.5 rounded-none bg-surface-container-lowest border border-outline text-primary-container focus:ring-0" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Remember session (24h TTL bound to IP)</span>
+</label>
+</div>
+<!-- Primary Submit -->
+<div class="pt-space-sm">
+<button class="w-full bg-primary-container text-surface-container-lowest hover:bg-primary font-label-code text-label-code uppercase font-bold py-space-sm px-space-md flex items-center justify-center gap-space-sm transition-colors duration-150" type="submit">
+<span>Authenticate &amp; Proceed to 2FA</span>
+<span class="material-symbols-outlined text-sm font-bold" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+<!-- ================= PANEL 2: REGISTER FLOW ================= -->
+<div class="p-panel-padding-spacious hidden" id="panel-register">
+<div class="mb-space-lg">
+<div class="flex items-center gap-space-xs text-secondary font-label-code text-body-sm mb-space-2xs uppercase tracking-wider">
+<span class="w-2 h-2 bg-secondary inline-block"></span>
+<span>Client-Side Key Generation</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">Generate cryptographic identity</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+            Profile fields (handle, contact, research field) are sealed client-side via RSA-3072 before database transmission.
+          </p>
+</div>
+<form class="space-y-space-md" onsubmit="event.preventDefault(); switchStage('totp');">
+<!-- Researcher Handle -->
+<div>
+<label class="font-label-code text-label-code text-on-surface uppercase block mb-space-xs" for="reg-handle">
+              Researcher Handle / Identity Callout
+            </label>
+<div class="flex items-center border border-outline-variant bg-surface-container-lowest focus-within:border-primary">
+<span class="px-space-sm font-label-code text-body-sm text-outline border-r border-outline-variant">ID_TAG</span>
+<input class="custom-input w-full bg-transparent p-space-sm font-label-code text-body-md text-on-surface placeholder:text-outline border-0 focus:ring-0" id="reg-handle" placeholder="e.g. cipher_operative_88" required="" type="text"/>
+</div>
+</div>
+<!-- Recovery Email + Asymmetric Badge -->
+<div>
+<div class="flex justify-between items-center mb-space-xs">
+<label class="font-label-code text-label-code text-on-surface uppercase" for="reg-email">
+                Recovery Contact
+              </label>
+<span class="border border-tertiary text-tertiary bg-tertiary/10 font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs uppercase">
+                [Client-Side RSA-3072 Encrypted]
+              </span>
+</div>
+<div class="flex items-center border border-outline-variant bg-surface-container-lowest focus-within:border-primary">
+<span class="px-space-sm font-label-code text-body-sm text-outline border-r border-outline-variant">MAIL</span>
+<input class="custom-input w-full bg-transparent p-space-sm font-label-code text-body-md text-on-surface placeholder:text-outline border-0 focus:ring-0" id="reg-email" placeholder="researcher@protonmail.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+<div>
+<label class="font-label-code text-label-code text-on-surface uppercase block mb-space-xs" for="reg-pwd">
+                Master Passphrase
+              </label>
+<input class="custom-input w-full border border-outline-variant bg-surface-container-lowest p-space-sm font-label-code text-body-md text-on-surface placeholder:text-outline focus:border-primary" id="reg-pwd" placeholder="Min. 16 characters" required="" type="password"/>
+</div>
+<div>
+<label class="font-label-code text-label-code text-on-surface uppercase block mb-space-xs" for="reg-pwd-confirm">
+                Confirm Passphrase
+              </label>
+<input class="custom-input w-full border border-outline-variant bg-surface-container-lowest p-space-sm font-label-code text-body-md text-on-surface placeholder:text-outline focus:border-primary" id="reg-pwd-confirm" placeholder="Repeat passphrase" required="" type="password"/>
+</div>
+</div>
+<!-- Key Provisioning Notice Box -->
+<div class="border border-outline-variant bg-surface-container-lowest p-space-sm flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="vpn_key">vpn_key</span>
+<div class="font-body-sm text-body-sm text-outline">
+<span class="text-secondary font-bold">Key Provisioning:</span> Upon submission, a dual-layer RSA-3072 identity vault and ElGamal (2048-bit Schnorr group) message keypair will be generated automatically.
+            </div>
+</div>
+<!-- Zero Knowledge Consent -->
+<div>
+<label class="flex items-start gap-space-sm cursor-pointer select-none">
+<input class="mt-0.5 w-3.5 h-3.5 rounded-none bg-surface-container-lowest border border-outline text-primary-container focus:ring-0" required="" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+                I understand that CipherDeck enforces pure zero-knowledge architecture and cannot recover plaintext data if master credentials and emergency keys are lost.
+              </span>
+</label>
+</div>
+<!-- Submit Button -->
+<div class="pt-space-xs">
+<button class="w-full bg-primary-container text-surface-container-lowest hover:bg-primary font-label-code text-label-code uppercase font-bold py-space-sm px-space-md flex items-center justify-center gap-space-sm transition-colors duration-150" type="submit">
+<span class="material-symbols-outlined text-sm font-bold" data-icon="shield_lock">shield_lock</span>
+<span>Generate Keypair &amp; Create Account</span>
+</button>
+</div>
+</form>
+</div>
+<!-- ================= PANEL 3: RFC 6238 TOTP STEP ================= -->
+<div class="p-panel-padding-spacious hidden" id="panel-totp">
+<div class="mb-space-lg text-center md:text-left">
+<div class="flex items-center justify-between mb-space-2xs">
+<span class="font-label-code text-body-sm text-primary uppercase tracking-wider flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-sm" data-icon="lock_clock">lock_clock</span>
+<span>Second Factor Authentication</span>
+</span>
+<div class="flex items-center gap-1 text-secondary font-telemetry-micro text-telemetry-micro border border-secondary px-space-xs py-space-2xs bg-secondary/5">
+<span class="w-1.5 h-1.5 bg-secondary rounded-none inline-block animate-ping"></span>
+<span>Active 2FA Ticket (Expires in 04:32)</span>
+</div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">RFC 6238 TOTP Verification</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+            Enter the 6-digit dynamic token generated by your hardware authenticator or RFC-compliant client application.
+          </p>
+</div>
+<div class="border border-outline-variant bg-surface-container-lowest p-space-lg mb-space-lg text-center">
+<label class="font-telemetry-micro text-telemetry-micro text-outline uppercase block mb-space-md tracking-widest">
+            AUTHENTICATOR_STREAM // RFC6238_SHA1_30S
+          </label>
+<!-- Split 6-digit inputs -->
+<div class="flex items-center justify-center gap-space-xs sm:gap-space-sm font-label-code text-headline-sm">
+<input class="w-10 h-12 sm:w-12 sm:h-14 text-center bg-surface-dim border border-primary text-primary focus:border-tertiary focus:outline-none focus:ring-0" maxlength="1" type="text" value=""/>
+<input class="w-10 h-12 sm:w-12 sm:h-14 text-center bg-surface-dim border border-primary text-primary focus:border-tertiary focus:outline-none focus:ring-0" maxlength="1" type="text" value=""/>
+<input class="w-10 h-12 sm:w-12 sm:h-14 text-center bg-surface-dim border border-primary text-primary focus:border-tertiary focus:outline-none focus:ring-0" maxlength="1" type="text" value=""/>
+<span class="text-outline text-xl font-bold select-none px-1">-</span>
+<input class="w-10 h-12 sm:w-12 sm:h-14 text-center bg-surface-dim border border-outline-variant text-on-surface focus:border-primary focus:outline-none focus:ring-0" maxlength="1" type="text" value=""/>
+<input class="w-10 h-12 sm:w-12 sm:h-14 text-center bg-surface-dim border border-outline-variant text-on-surface focus:border-primary focus:outline-none focus:ring-0" maxlength="1" type="text" value=""/>
+<input class="w-10 h-12 sm:w-12 sm:h-14 text-center bg-surface-dim border border-outline-variant text-on-surface focus:border-primary focus:outline-none focus:ring-0" maxlength="1" placeholder="•" type="text"/>
+</div>
+<div class="mt-space-md flex items-center justify-center gap-space-xs font-telemetry-micro text-telemetry-micro text-outline">
+<span class="material-symbols-outlined text-xs" data-icon="info">info</span>
+<span>Dynamic truncation computed in-memory. Zero third-party authenticator telemetry.</span>
+</div>
+</div>
+<div class="space-y-space-sm">
+<button class="w-full bg-primary-container text-surface-container-lowest hover:bg-primary font-label-code text-label-code uppercase font-bold py-space-sm px-space-md flex items-center justify-center gap-space-sm transition-colors duration-150" onclick="alert('Session authenticated and cryptographic identity unlocked.')" type="button">
+<span class="material-symbols-outlined text-sm font-bold" data-icon="key">key</span>
+<span>Verify &amp; Decrypt Session</span>
+</button>
+<button class="w-full border border-outline-variant hover:border-outline text-outline hover:text-on-surface font-label-code text-body-sm uppercase py-space-sm px-space-md flex items-center justify-center gap-space-sm transition-colors duration-150" onclick="switchStage('recovery')" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="settings_backup_restore">settings_backup_restore</span>
+<span>Use Emergency Key Vault Fallback</span>
+</button>
+</div>
+</div>
+<!-- ================= PANEL 4: RECOVERY FLOW ================= -->
+<div class="p-panel-padding-spacious hidden" id="panel-recovery">
+<div class="mb-space-lg">
+<div class="flex items-center gap-space-xs text-error font-label-code text-body-sm mb-space-2xs uppercase tracking-wider">
+<span class="w-2 h-2 bg-error inline-block"></span>
+<span>Zero-Knowledge Recovery Protocol</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">Cryptographic Identity &amp; Password Recovery</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+            Because CipherDeck enforces strict zero-knowledge architecture, passwords are never stored in plaintext and cannot be sent via email reset links.
+          </p>
+</div>
+<!-- Two Recovery Tabs / Methods -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md mb-space-lg">
+<!-- Method 1 -->
+<div class="border border-outline-variant bg-surface-container-lowest p-space-md hover:border-primary cursor-pointer transition-colors">
+<div class="flex items-center gap-space-xs font-label-code text-body-sm text-primary mb-space-xs uppercase">
+<span class="material-symbols-outlined text-sm" data-icon="file_open">file_open</span>
+<span>Option A: Master Key Token</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">
+              Upload your RSA-wrapped emergency recovery token (.pem) generated during initial identity provisioning.
+            </p>
+</div>
+<!-- Method 2 -->
+<div class="border border-outline-variant bg-surface-container-lowest p-space-md hover:border-primary cursor-pointer transition-colors">
+<div class="flex items-center gap-space-xs font-label-code text-body-sm text-on-surface mb-space-xs uppercase">
+<span class="material-symbols-outlined text-sm" data-icon="grain">grain</span>
+<span>Option B: Salt Re-Derivation</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">
+              Provide registered identity handle to query public PBKDF2 salt parameters and recalculate hash proofs.
+            </p>
+</div>
+</div>
+<!-- File Dropzone Simulation -->
+<div class="border border-dashed border-outline-variant hover:border-primary bg-surface-container-lowest/80 p-space-lg text-center cursor-pointer transition-colors mb-space-md">
+<span class="material-symbols-outlined text-outline text-3xl mb-space-xs" data-icon="cloud_upload">cloud_upload</span>
+<div class="font-label-code text-label-code text-on-surface uppercase">
+            Drop emergency token file here or click to browse
+          </div>
+<div class="font-telemetry-micro text-telemetry-micro text-outline mt-space-xs">
+            EXPECTED FORMAT: cipherdeck-emergency-recovery.pem (ENCRYPTED_PKCS8)
+          </div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col sm:flex-row gap-space-sm pt-space-xs">
+<button class="flex-1 bg-primary-container text-surface-container-lowest hover:bg-primary font-label-code text-label-code uppercase font-bold py-space-sm px-space-md flex items-center justify-center gap-space-sm transition-colors duration-150" onclick="alert('Parsing cryptographic emergency container...')" type="button">
+<span class="material-symbols-outlined text-sm font-bold" data-icon="published_with_changes">published_with_changes</span>
+<span>Restore Identity Vault</span>
+</button>
+<button class="border border-outline-variant hover:border-outline text-outline hover:text-on-surface font-label-code text-body-sm uppercase py-space-sm px-space-md flex items-center justify-center gap-space-sm transition-colors duration-150" onclick="switchStage('signin')" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_back">arrow_back</span>
+<span>Back to Sign In</span>
+</button>
+</div>
+</div>
+<!-- ================= TRUST & ARCHITECTURE BAR ================= -->
+<div class="border-t border-outline-variant bg-surface-container-lowest px-panel-padding-compact py-space-sm grid grid-cols-1 md:grid-cols-3 gap-space-sm font-telemetry-micro text-telemetry-micro text-outline">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="verified">verified</span>
+<div>
+<span class="text-on-surface font-bold">PURE ASYMMETRIC</span>
+<span class="block">RSA-3072 &amp; ElGamal 2048</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs border-t md:border-t-0 md:border-l border-outline-variant pt-space-xs md:pt-0 md:pl-space-sm">
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="lock_clock">lock_clock</span>
+<div>
+<span class="text-on-surface font-bold">RFC 6238 COMPLIANT</span>
+<span class="block">Dynamic TOTP enforcement</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs border-t md:border-t-0 md:border-l border-outline-variant pt-space-xs md:pt-0 md:pl-space-sm">
+<span class="material-symbols-outlined text-sm text-tertiary" data-icon="shield">shield</span>
+<div>
+<span class="text-on-surface font-bold">ZERO PLAINTEXT AT REST</span>
+<span class="block">Client-side sealed profile vault</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Telemetry Footnote -->
+<div class="font-telemetry-micro text-telemetry-micro text-outline text-center uppercase tracking-widest mt-2">
+      ENCLAVE VERIFIED // PROTOCOL VERSION 4.2.1-RELEASE // ZERO AD-TRACKERS // ZERO EXTERNAL CDN SCRIPTS
+    </div>
+</main>
+<!-- ================= FOOTER (SHARED COMPONENT) ================= -->
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-gutter-desktop py-panel-padding-compact max-w-full border-t border-outline-variant bg-surface-container-lowest gap-space-sm font-body-sm text-body-sm z-50">
+<div class="font-telemetry-micro text-telemetry-micro text-outline uppercase">
+      © 2025 CIPHERDECK JOURNAL. ZERO-KNOWLEDGE PAYLOAD ARCHITECTURE // RFC 6238 COMPLIANT. PURE ASYMMETRIC STATE.
+    </div>
+<div class="flex flex-wrap items-center gap-space-md font-label-code text-label-code">
+<a class="text-outline hover:text-primary underline decoration-primary decoration-1 underline-offset-4 uppercase tracking-wider" href="#">ROOT_CERT</a>
+<a class="text-outline hover:text-primary underline decoration-primary decoration-1 underline-offset-4 uppercase tracking-wider" href="#">PGP_KEYS</a>
+<a class="text-outline hover:text-primary underline decoration-primary decoration-1 underline-offset-4 uppercase tracking-wider" href="#">HMAC_VALIDATION</a>
+<a class="text-outline hover:text-primary underline decoration-primary decoration-1 underline-offset-4 uppercase tracking-wider" href="#">THREAT_FEED</a>
+<a class="text-outline hover:text-primary underline decoration-primary decoration-1 underline-offset-4 uppercase tracking-wider" href="#">CANARY_LOG</a>
+</div>
+</footer>
+<!-- ================= INTERACTIVE VIEW CONTROLLER SCRIPT ================= -->
+<script>
+    function switchStage(stage) {
+      const stages = ['signin', 'register', 'totp', 'recovery'];
+      
+      stages.forEach(s => {
+        const panel = document.getElementById('panel-' + s);
+        const tab = document.getElementById('tab-' + s);
+        
+        if (s === stage) {
+          panel.classList.remove('hidden');
+          panel.classList.add('block');
+          
+          tab.classList.remove('text-outline', 'border-transparent');
+          tab.classList.add('text-primary', 'border-primary', 'bg-surface-dim', 'font-bold');
+        } else {
+          panel.classList.remove('block');
+          panel.classList.add('hidden');
+          
+          tab.classList.add('text-outline', 'border-transparent');
+          tab.classList.remove('text-primary', 'border-primary', 'bg-surface-dim', 'font-bold');
+        }
+      });
+    }
+  </script>
+<script src="/assets/api.js?v=3"></script>
+<script src="/assets/app-login.js?v=3"></script>
+</body></html>

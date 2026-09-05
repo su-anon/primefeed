@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CipherDeck Journal — Peer-Reviewed Security &amp; Cryptography</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Space+Grotesk:wght@500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#0f131c",
+            "surface-dim": "#0a0e16",
+            "surface-container-lowest": "#0d111a",
+            "surface-container-low": "#131823",
+            "surface-container": "#181d2a",
+            "surface-container-high": "#202636",
+            "surface-container-highest": "#2c3345",
+            "on-surface": "#e4e7f1",
+            "on-surface-variant": "#9ba6b9",
+            "outline": "#3b4559",
+            "outline-variant": "#222a3a",
+            "primary": "#67b7f7",
+            "primary-container": "#1e4976",
+            "on-primary": "#041d33",
+            "secondary": "#4edea3",
+            "secondary-container": "#13422e",
+            "tertiary": "#4cd7f6",
+            "background": "#0b0f17",
+            "on-background": "#e4e7f1"
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            mono: ['Space Mono', 'monospace']
+          },
+          borderRadius: {
+            DEFAULT: "0.375rem",
+            lg: "0.625rem",
+            xl: "0.875rem",
+            "2xl": "1.25rem",
+            full: "9999px"
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 18px;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-sans antialiased min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary">
+<!-- TOP EDITORIAL MASTHEAD & NAVIGATION -->
+<header class="border-b border-outline-variant bg-surface/90 backdrop-blur-md sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+<!-- Brand & Status -->
+<div class="flex items-center gap-6">
+<a class="flex items-center gap-2.5 group" href="#">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary via-primary-container to-surface-container-high border border-primary/40 flex items-center justify-center text-on-primary shadow-sm group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-white text-base">shield_lock</span>
+</div>
+<div class="flex flex-col">
+<span class="font-display font-bold text-lg tracking-tight text-on-surface flex items-center gap-1.5">
+              CipherDeck
+              <span class="text-xs font-semibold px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-mono uppercase tracking-wider">Journal</span>
+</span>
+<span class="text-[11px] text-on-surface-variant/80 -mt-1 hidden sm:inline">Peer-Reviewed Security Engineering</span>
+</div>
+</a>
+<!-- Subtle Subheader Network Status Badge -->
+<div class="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/60 text-xs text-on-surface-variant font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span>Zero-Knowledge Net</span>
+</div>
+</div>
+<!-- Center Nav Links -->
+<nav class="hidden md:flex items-center gap-1 text-sm font-medium text-on-surface-variant">
+<a class="px-3 py-1.5 rounded-md text-on-surface bg-surface-container font-semibold transition-colors" href="/home/">Feed</a>
+<a class="px-3 py-1.5 rounded-md hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="/messages/">
+<span class="material-symbols-outlined text-sm mr-1">chat_bubble_outline</span>Messages</a>
+<a class="px-3 py-1.5 rounded-md hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="/profile/">
+<span class="material-symbols-outlined text-sm mr-1">settings</span>Settings</a>
+<a id="nav-admin" class="pf-admin-only hidden px-3 py-1.5 rounded-md hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="/admin/">
+<span class="material-symbols-outlined text-sm mr-1">shield_person</span>Admin</a>
+</nav>
+<!-- Right Header Actions -->
+<div class="flex items-center gap-3">
+<!-- Quick Search -->
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-sm">search</span>
+<input class="w-48 lg:w-64 pl-9 pr-3 py-1.5 rounded-full bg-surface-container border border-outline-variant text-xs text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-1 focus:ring-primary focus:w-72 transition-all" placeholder="Search dispatches, IoCs, authors..." type="text"/>
+</div>
+<!-- Write Dispatch CTA -->
+<a class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary text-on-primary text-xs font-semibold hover:bg-primary/90 transition-all shadow-sm" href="#">
+<span class="material-symbols-outlined text-sm">edit_square</span>
+<span class="hidden sm:inline">Write Dispatch</span>
+</a>
+<!-- Author / User Profile Dropdown Pill -->
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant">
+<a href="/profile/" class="flex items-center gap-2 p-1 rounded-full hover:bg-surface-container transition-colors" title="Settings / Profile">
+<div class="w-8 h-8 rounded-full bg-gradient-to-tr from-secondary-container via-surface-container-high to-surface-container-highest border border-secondary/40 flex items-center justify-center font-mono text-xs font-bold text-secondary">
+              <span id="nav-avatar">α9</span>
+            </div>
+<span class="text-xs font-medium text-on-surface hidden xl:inline" id="nav-username">@analyst_alpha</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm hidden xl:inline">expand_more</span>
+</a>
+</div>
+</div>
+</div>
+</header>
+<!-- EDITORIAL SUB-BAR / TOPIC TICKER -->
+<div class="border-b border-outline-variant/60 bg-surface-container-lowest/70 backdrop-blur-sm py-2">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+<span class="font-mono text-[11px] font-semibold text-secondary uppercase tracking-wider flex items-center gap-1 shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Live Feed
+        </span>
+<span class="text-outline">/</span>
+<span class="truncate">CVE-2025-0149 mitigation live in LibSchnorr 3.1</span>
+<span class="text-outline">·</span>
+<span class="text-on-surface-variant/70 shrink-0 hidden md:inline">24 active peer validators online</span>
+</div>
+<div class="hidden sm:flex items-center gap-4 text-xs font-mono shrink-0 pl-4">
+<span class="text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span> HMAC Verified
+        </span>
+<span class="text-on-surface-variant/70">Warrant Canary: Normal</span>
+</div>
+</div>
+</div>
+<!-- MAIN PAGE CONTENT WRAPPER -->
+<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-10">
+<!-- FEATURED LEAD EDITORIAL STORY -->
+<section class="relative rounded-2xl border border-outline-variant bg-gradient-to-b from-surface-container/60 via-surface-container-low to-surface-container-lowest overflow-hidden p-6 sm:p-8 lg:p-10 shadow-lg">
+<!-- Subtle top decorative glowing border -->
+<div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Left: Editorial Content -->
+<div class="lg:col-span-8 flex flex-col gap-4">
+<div class="flex items-center gap-2.5 flex-wrap">
+<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
+              Featured Research
+            </span>
+<span class="px-2.5 py-1 rounded-full text-xs font-mono bg-secondary/10 text-secondary border border-secondary/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span> HMAC Validated
+            </span>
+<span class="text-xs text-on-surface-variant font-mono">14 minutes ago · 6 min read</span>
+</div>
+<h1 class="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-on-surface tracking-tight leading-tight hover:text-primary transition-colors cursor-pointer">
+            Novel Subgroup Confinement Attack Mitigations in ElGamal Schnorr Handshakes
+          </h1>
+<p class="text-on-surface-variant text-base sm:text-lg leading-relaxed font-normal">
+            Formal proofs and engineering mitigations against invalid-curve and small-subgroup parameter poisoning during asynchronous peer discovery. Implementation demonstrates stateless cryptographic proofs ensuring zero plaintext leakage across untrusted relays.
+          </p>
+<!-- Author Byline & Micro-actions -->
+<div class="pt-3 border-t border-outline-variant/60 flex flex-wrap items-center justify-between gap-4 mt-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-primary/30 flex items-center justify-center font-mono font-bold text-primary text-sm">
+                KV
+              </div>
+<div>
+<div class="text-sm font-semibold text-on-surface flex items-center gap-1.5">
+                  Dr. K. Valeri
+                  <span class="text-xs text-primary font-mono">@k_val_audit</span>
+</div>
+<div class="text-xs text-on-surface-variant/80 font-mono">Principal Cryptographer · Key 0x3F9A</div>
+</div>
+</div>
+<div class="flex items-center gap-2.5">
+<a class="px-4 py-2 rounded-lg bg-primary text-on-primary text-xs sm:text-sm font-semibold hover:bg-primary/90 transition-all inline-flex items-center gap-1.5 shadow" href="#">
+<span>Read Full Analysis</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+<button class="p-2 rounded-lg border border-outline-variant hover:border-outline hover:text-primary text-on-surface-variant transition-colors" title="Bookmark Article">
+<span class="material-symbols-outlined text-base">bookmark_border</span>
+</button>
+<button class="p-2 rounded-lg border border-outline-variant hover:border-outline hover:text-primary text-on-surface-variant transition-colors" title="Share Dispatch">
+<span class="material-symbols-outlined text-base">share</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right: Elegant Cryptographic Insight Card (Clean, Non-bloated) -->
+<div class="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-5 flex flex-col justify-between gap-4">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/60">
+<span class="text-xs font-mono font-semibold uppercase tracking-wider text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm">terminal</span>
+              Proof Specimen
+            </span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-surface-container text-secondary border border-secondary/20">
+              SHA-256 Valid
+            </span>
+</div>
+<div class="text-xs font-mono text-on-surface-variant/90 space-y-1.5 bg-surface-container/50 p-3 rounded-lg border border-outline-variant/40">
+<div class="text-primary font-semibold">// Schnorr Parameter Verification</div>
+<div class="text-on-surface">Curve: <span class="text-on-surface-variant">edwards25519_strict</span></div>
+<div class="text-on-surface">Order: <span class="text-on-surface-variant">2^252 + 27742317777...</span></div>
+<div class="text-on-surface">Subgroup cofactor: <span class="text-secondary font-bold">h = 8 (clamped)</span></div>
+<div class="text-on-surface">Zero-slack test: <span class="text-secondary">PASS [0x00]</span></div>
+</div>
+<div class="pt-2 text-[11px] font-mono text-on-surface-variant/70 flex justify-between items-center border-t border-outline-variant/60">
+<span>AUDIT SCORE: 99.8%</span>
+<span class="text-primary hover:underline cursor-pointer">Inspect Sig »</span>
+</div>
+</div>
+</div>
+</section>
+<!-- EDITORIAL CONTENT FEED & SIDEBAR GRID -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- LEFT: ARTICLE STREAM (8 COLUMNS) -->
+<section class="lg:col-span-8 flex flex-col gap-6">
+<!-- Category / Filter Tabs -->
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/80 gap-3 overflow-x-auto no-scrollbar">
+<div class="flex items-center gap-1.5 shrink-0">
+<button class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-on-surface text-surface hover:opacity-95 transition-all">Latest</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all">Zero-Day IoCs</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all">Applied Cryptography</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all">Architecture</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all hidden sm:inline-block">OpSec</button>
+</div>
+<div class="hidden sm:flex items-center gap-1.5 text-xs text-on-surface-variant font-mono shrink-0">
+<span>Sort:</span>
+<select class="bg-surface-container text-xs text-on-surface border border-outline-variant rounded px-2 py-1 focus:ring-0 focus:outline-none cursor-pointer">
+<option>Most Recent</option>
+<option>Most Verified</option>
+<option>Most Discussed</option>
+</select>
+</div>
+</div>
+<!-- POST 1 -->
+<article class="p-6 rounded-xl border border-outline-variant bg-surface-container-lowest/60 hover:bg-surface-container-low/80 hover:border-outline transition-all flex flex-col gap-3 group">
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-mono font-bold text-secondary text-[10px]">
+                PY
+              </div>
+<span class="font-medium text-on-surface">@py_hardened</span>
+<span class="text-outline">·</span>
+<span class="font-mono text-on-surface-variant/80">28 min ago</span>
+<span class="text-outline">·</span>
+<span class="text-on-surface-variant/80">4 min read</span>
+</div>
+<span class="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
+<span class="material-symbols-outlined text-xs">check_circle</span> HMAC Verified
+            </span>
+</div>
+<h2 class="font-display text-xl sm:text-2xl font-bold text-on-surface group-hover:text-primary transition-colors cursor-pointer leading-snug">
+            Deconstructing Stealth C2 Channels Over Subgroup Nonce Leakage
+          </h2>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+            Technical analysis of telemetry observations indicating adversarial attempts to encode command and control heartbeat signals directly into Schnorr signature random nonces. Includes verification routines for zero-slack nonce validation.
+          </p>
+<div class="pt-3 border-t border-outline-variant/40 flex items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-mono text-[11px]">#network-c2</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-mono text-[11px]">#schnorr</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">chat_bubble_outline</span>
+<span>14 comments</span>
+</button>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-secondary transition-colors font-mono">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span>12 sigs</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors" title="Bookmark">
+<span class="material-symbols-outlined text-base">bookmark_border</span>
+</button>
+</div>
+</div>
+</article>
+<!-- POST 2 -->
+<article class="p-6 rounded-xl border border-outline-variant bg-surface-container-lowest/60 hover:bg-surface-container-low/80 hover:border-outline transition-all flex flex-col gap-3 group">
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-mono font-bold text-primary text-[10px]">
+                RS
+              </div>
+<span class="font-medium text-on-surface">@rel_sec_team</span>
+<span class="text-outline">·</span>
+<span class="font-mono text-on-surface-variant/80">1 hour ago</span>
+<span class="text-outline">·</span>
+<span class="text-on-surface-variant/80">8 min read</span>
+</div>
+<span class="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
+<span class="material-symbols-outlined text-xs">check_circle</span> HMAC Verified
+            </span>
+</div>
+<h2 class="font-display text-xl sm:text-2xl font-bold text-on-surface group-hover:text-primary transition-colors cursor-pointer leading-snug">
+            Mandatory RFC 6238 TOTP &amp; 90-Day Key Lifetimes in Production
+          </h2>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+            Implementation standards for rolling cryptographic ephemeral keys across air-gapped terminal nodes. Discussing strict revocation mechanics, automated quarantine on key expiration, and synchronized TOTP drift calibration.
+          </p>
+<div class="pt-3 border-t border-outline-variant/40 flex items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-mono text-[11px]">#rfc6238</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-mono text-[11px]">#key-lifecycle</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">chat_bubble_outline</span>
+<span>8 comments</span>
+</button>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-secondary transition-colors font-mono">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span>29 sigs</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors" title="Bookmark">
+<span class="material-symbols-outlined text-base">bookmark_border</span>
+</button>
+</div>
+</div>
+</article>
+<!-- POST 3 -->
+<article class="p-6 rounded-xl border border-outline-variant bg-surface-container-lowest/60 hover:bg-surface-container-low/80 hover:border-outline transition-all flex flex-col gap-3 group">
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-mono font-bold text-tertiary text-[10px]">
+                C9
+              </div>
+<span class="font-medium text-on-surface">@cipher_node_9</span>
+<span class="text-outline">·</span>
+<span class="font-mono text-on-surface-variant/80">2 hours ago</span>
+<span class="text-outline">·</span>
+<span class="text-on-surface-variant/80">5 min read</span>
+</div>
+<span class="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
+<span class="material-symbols-outlined text-xs">check_circle</span> Tamper-Audited
+            </span>
+</div>
+<h2 class="font-display text-xl sm:text-2xl font-bold text-on-surface group-hover:text-primary transition-colors cursor-pointer leading-snug">
+            Client-Side SQLite Ciphertext Storage: Auditing Zero-Knowledge Bounds
+          </h2>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+            How CipherDeck isolates local database tables using encrypted envelope models. Even during physical disk forensic extraction, zero plaintext or entropy leakage occurs without the client terminal's physical hardware token.
+          </p>
+<div class="pt-3 border-t border-outline-variant/40 flex items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-mono text-[11px]">#sqlite-encryption</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-mono text-[11px]">#zero-knowledge</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">chat_bubble_outline</span>
+<span>21 comments</span>
+</button>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-secondary transition-colors font-mono">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span>18 sigs</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors" title="Bookmark">
+<span class="material-symbols-outlined text-base">bookmark_border</span>
+</button>
+</div>
+</div>
+</article>
+<!-- POST 4 -->
+<article class="p-6 rounded-xl border border-outline-variant bg-surface-container-lowest/60 hover:bg-surface-container-low/80 hover:border-outline transition-all flex flex-col gap-3 group">
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-mono font-bold text-primary text-[10px]">
+                A9
+              </div>
+<span class="font-medium text-on-surface">@analyst_alpha_9</span>
+<span class="text-outline">·</span>
+<span class="font-mono text-on-surface-variant/80">3 hours ago</span>
+<span class="text-outline">·</span>
+<span class="text-on-surface-variant/80">7 min read</span>
+</div>
+<span class="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
+<span class="material-symbols-outlined text-xs">check_circle</span> HMAC Verified
+            </span>
+</div>
+<h2 class="font-display text-xl sm:text-2xl font-bold text-on-surface group-hover:text-primary transition-colors cursor-pointer leading-snug">
+            Automated Quarantine Triggers on Bit-Flip Tamper Detection
+          </h2>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+            Telemetry reports on proactive memory corruption and transmission tamper countermeasures. Exploring instant session severance and key rotation routines triggered by single-byte mismatches in payload validation.
+          </p>
+<div class="pt-3 border-t border-outline-variant/40 flex items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-mono text-[11px]">#memory-safety</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-mono text-[11px]">#quarantine</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">chat_bubble_outline</span>
+<span>37 comments</span>
+</button>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-secondary transition-colors font-mono">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span>44 sigs</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors" title="Bookmark">
+<span class="material-symbols-outlined text-base">bookmark_border</span>
+</button>
+</div>
+</div>
+</article>
+<!-- LOAD MORE STORIES BUTTON -->
+<button class="w-full py-3.5 rounded-xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container hover:text-primary hover:border-primary/50 text-sm font-semibold text-on-surface transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-base">arrow_downward</span>
+<span>Load More Dispatches</span>
+</button>
+</section>
+<!-- RIGHT: EDITORIAL SIDEBAR (4 COLUMNS) -->
+<aside class="lg:col-span-4 flex flex-col gap-6">
+<!-- SUBMIT / START WRITING CARD -->
+<div class="p-6 rounded-xl border border-outline-variant bg-surface-container-low flex flex-col gap-3 relative overflow-hidden">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-lg">history_edu</span>
+<h3 class="font-display font-semibold text-base text-on-surface">Publish to CipherDeck</h3>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed">
+            Have verified threat intelligence, a zero-day analysis, or formal proof to share? Submit a signed peer dispatch to the network.
+          </p>
+<a class="mt-2 w-full py-2.5 px-4 rounded-lg bg-primary text-on-primary text-xs font-semibold hover:bg-primary/90 transition-all text-center flex items-center justify-center gap-1.5 shadow" href="#">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+<span>Submit a Dispatch</span>
+</a>
+</div>
+<!-- WEEKLY EDITORIAL NEWSLETTER -->
+<div class="p-6 rounded-xl border border-outline-variant bg-surface-container-lowest flex flex-col gap-3">
+<div class="flex items-center gap-2 text-secondary">
+<span class="material-symbols-outlined text-lg">mark_email_read</span>
+<h3 class="font-display font-semibold text-base text-on-surface">The Intelligence Digest</h3>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed">
+            Weekly digest of top peer-reviewed cryptographic discoveries, exploit write-ups, and signature-verified IoCs delivered to your inbox.
+          </p>
+<form class="flex flex-col gap-2 mt-1" onsubmit="event.preventDefault()">
+<input class="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant text-xs text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary" placeholder="researcher@domain.tld" type="email"/>
+<button class="w-full py-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant text-on-surface text-xs font-semibold transition-all" type="submit">
+              Subscribe Free
+            </button>
+</form>
+<span class="text-[11px] text-on-surface-variant/60 font-mono text-center">Zero tracking. Unsubscribe anytime.</span>
+</div>
+<!-- TRENDING TOPICS -->
+<div class="p-6 rounded-xl border border-outline-variant bg-surface-container-lowest flex flex-col gap-3">
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/60">
+<h3 class="font-display font-semibold text-sm text-on-surface">Trending Topics</h3>
+<span class="text-xs text-on-surface-variant font-mono">24h active</span>
+</div>
+<div class="flex flex-wrap gap-2 pt-1">
+<a class="px-2.5 py-1 rounded-full text-xs bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant transition-colors" href="#">#elgamal-schnorr <span class="text-[10px] text-on-surface-variant">42</span></a>
+<a class="px-2.5 py-1 rounded-full text-xs bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant transition-colors" href="#">#zero-plaintext <span class="text-[10px] text-on-surface-variant">38</span></a>
+<a class="px-2.5 py-1 rounded-full text-xs bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant transition-colors" href="#">#ioc-feed <span class="text-[10px] text-on-surface-variant">29</span></a>
+<a class="px-2.5 py-1 rounded-full text-xs bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant transition-colors" href="#">#sha256-hmac <span class="text-[10px] text-on-surface-variant">25</span></a>
+<a class="px-2.5 py-1 rounded-full text-xs bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant transition-colors" href="#">#crypto-bounds <span class="text-[10px] text-on-surface-variant">19</span></a>
+<a class="px-2.5 py-1 rounded-full text-xs bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant transition-colors" href="#">#rfc6238 <span class="text-[10px] text-on-surface-variant">14</span></a>
+</div>
+</div>
+<!-- FEATURED RESEARCHERS -->
+<div class="p-6 rounded-xl border border-outline-variant bg-surface-container-lowest flex flex-col gap-4">
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/60">
+<h3 class="font-display font-semibold text-sm text-on-surface">Top Researchers</h3>
+<span class="text-xs text-secondary font-mono">Peer-Verified</span>
+</div>
+<div class="flex flex-col gap-3.5">
+<!-- Author 1 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-primary/40 flex items-center justify-center font-mono text-xs font-bold text-primary">
+                  KV
+                </div>
+<div>
+<div class="text-xs font-semibold text-on-surface hover:text-primary cursor-pointer">@k_val_audit</div>
+<div class="text-[11px] text-on-surface-variant">Applied Elliptic Curves</div>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant transition-colors">
+                Follow
+              </button>
+</div>
+<!-- Author 2 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-secondary/40 flex items-center justify-center font-mono text-xs font-bold text-secondary">
+                  PH
+                </div>
+<div>
+<div class="text-xs font-semibold text-on-surface hover:text-primary cursor-pointer">@py_hardened</div>
+<div class="text-[11px] text-on-surface-variant">Memory Safety &amp; Nonces</div>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant transition-colors">
+                Follow
+              </button>
+</div>
+<!-- Author 3 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center font-mono text-xs font-bold text-tertiary">
+                  RS
+                </div>
+<div>
+<div class="text-xs font-semibold text-on-surface hover:text-primary cursor-pointer">@rel_sec_team</div>
+<div class="text-[11px] text-on-surface-variant">Infrastructure &amp; Keys</div>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant transition-colors">
+                Follow
+              </button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- EDITORIAL FOOTER -->
+<footer class="border-t border-outline-variant bg-surface-container-lowest mt-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+<!-- Col 1: Brand Info -->
+<div class="md:col-span-1 flex flex-col gap-3">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-primary/20 border border-primary/40 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-sm">shield_lock</span>
+</div>
+<span class="font-display font-bold text-base text-on-surface">CipherDeck Journal</span>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed">
+            An open, peer-reviewed engineering journal exploring zero-knowledge systems, formal cryptography, and resilient network security.
+          </p>
+</div>
+<!-- Col 2: Navigation -->
+<div>
+<h4 class="text-xs font-semibold text-on-surface uppercase tracking-wider mb-3 font-mono">Dispatches</h4>
+<ul class="space-y-2 text-xs text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Zero-Day IoCs</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Cryptographic Analysis</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Network Telemetry</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Architecture Papers</a></li>
+</ul>
+</div>
+<!-- Col 3: Protocol & Trust -->
+<div>
+<h4 class="text-xs font-semibold text-on-surface uppercase tracking-wider mb-3 font-mono">Integrity &amp; Trust</h4>
+<ul class="space-y-2 text-xs text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">HMAC Verification Tool</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Public PGP Keyring</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Warrant Canary Log</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Reproducible Builds</a></li>
+</ul>
+</div>
+<!-- Col 4: Feeds & Contact -->
+<div>
+<h4 class="text-xs font-semibold text-on-surface uppercase tracking-wider mb-3 font-mono">Connect</h4>
+<ul class="space-y-2 text-xs text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors flex items-center gap-1.5" href="#"><span class="material-symbols-outlined text-xs">rss_feed</span> RSS Dispatch Feed</a></li>
+<li><a class="hover:text-primary transition-colors flex items-center gap-1.5" href="#"><span class="material-symbols-outlined text-xs">code</span> GitHub Repository</a></li>
+<li><a class="hover:text-primary transition-colors flex items-center gap-1.5" href="#"><span class="material-symbols-outlined text-xs">security</span> Vulnerability Disclosure</a></li>
+<li><a class="hover:text-primary transition-colors flex items-center gap-1.5" href="#"><span class="material-symbols-outlined text-xs">mail</span> Editorial Inquiries</a></li>
+</ul>
+</div>
+</div>
+<!-- Bottom Bar -->
+<div class="pt-6 border-t border-outline-variant/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant/80 font-mono">
+<div>
+          © 2025 CipherDeck Journal. Published under CC BY-SA 4.0.
+        </div>
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1 text-secondary"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Network Status: Healthy</span>
+<span class="text-outline">·</span>
+<span>Zero Plaintext Stored</span>
+</div>
+</div>
+</div>
+</footer>
+<script src="/assets/api.js?v=3"></script>
+<script src="/assets/app-home.js?v=3"></script>
+</body></html>
