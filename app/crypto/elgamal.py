@@ -11,75 +11,170 @@
 """
 
 import json
+import os
+import secrets
 
-from .math_utils import generate_prime, is_probable_prime, modinv, random_int
+# --- Standalone Primitives & Math Helpers ----------------------------------
+
+_SMALL_PRIMES = [
+    2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
+    73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151,
+    157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233,
+    239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317,
+    331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419,
+    421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503,
+    509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607,
+    613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701,
+    709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811,
+    821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911,
+    919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997
+]
+
+
+def random_int(lo, hi):
+    """Uniformly random integer in [lo, hi] (inclusive) via secrets."""
+    span = hi - lo + 1
+    return lo + secrets.randbelow(span)
+
+
+def is_probable_prime(n, rounds=16):
+    """Miller-Rabin primality test with small-prime pre-filter."""
+    if n < 2:
+        return False
+    for p in _SMALL_PRIMES:
+        if n % p == 0:
+            return n == p
+
+    # Factor n - 1 into odd_component * 2^(power_of_two)
+    odd_component = n - 1
+    power_of_two = 0
+    while odd_component % 2 == 0:
+        odd_component //= 2
+        power_of_two += 1
+
+    for _ in range(rounds):
+        random_base = random_int(2, n - 2)
+        test_value = pow(random_base, odd_component, n)
+
+        if test_value in (1, n - 1):
+            continue
+
+        for _ in range(power_of_two - 1):
+            test_value = pow(test_value, 2, n)
+            if test_value == n - 1:
+                break
+
+        if test_value != n - 1:
+            return False
+
+    return True
+
+
+def generate_prime(bits, rounds=24):
+    """Generate a probable prime of exactly ``bits`` bits from scratch."""
+    min_val = 2 ** (bits - 1)
+    max_val = (2 ** bits) - 1
+
+    while True:
+        candidate = random_int(min_val, max_val)
+        if candidate % 2 == 0:
+            candidate += 1
+
+        if candidate <= max_val and is_probable_prime(candidate, rounds):
+            return candidate
+
+
+def modinv(a, m):
+    """Modular inverse of ``a`` modulo ``m``."""
+    return pow(a, -1, m)
+
+
 
 
 class ElGamalDomain:
     """Shared domain parameters (p, q, g) for the whole platform."""
 
-    def __init__(self, p: int, q: int, g: int):
+    def __init__(self, p, q, g):
         self.p = p
         self.q = q
         self.g = g
 
-    def generate_keypair(self) -> dict:
+    def generate_keypair(self):
         """Generate an ElGamal keypair {"x": private, "y": public}."""
         x = random_int(2, self.q - 1)
         y = pow(self.g, x, self.p)
         return {"x": x, "y": y}
 
-    def encrypt(self, public_y: int, plaintext: bytes, block_size: int = 200) -> bytes:
-        """Encrypt ``plaintext`` to public key ``public_y``.
-
-        Each plaintext block is framed as 2-byte length + data + zero padding to
-        a fixed frame size (2 + block_size), converted to an integer m (< p),
-        then ElGamal-encrypted. The ciphertext starts with a 2-byte header
-        carrying the block size so decrypt can locate each frame. Output per
-        block is (c1 || c2), each modulus_bytes(p) long.
-        """
+    def encrypt(self, public_y, plaintext, block_size=200):
+        """Encrypt plaintext to public key public_y."""
         p, g, q = self.p, self.g, self.q
-        k_bytes = (p.bit_length() + 7) // 8
-        if block_size + 2 > k_bytes:  # frame must fit below the modulus
-            block_size = k_bytes - 2
+        modulus_bytes = (p.bit_length() + 7) // 8
 
-        out = block_size.to_bytes(2, "big")  # header: block size used
-        for i in range(0, len(plaintext), block_size):
-            chunk = plaintext[i:i + block_size]
-            framed = len(chunk).to_bytes(2, "big") + chunk + b"\x00" * (block_size - len(chunk))
-            m = int.from_bytes(framed, "big")
-            k = random_int(2, q - 1)
-            c1 = pow(g, k, p)
-            c2 = (m * pow(public_y, k, p)) % p
-            out += c1.to_bytes(k_bytes, "big") + c2.to_bytes(k_bytes, "big")
-        return out
+        # Frame must fit strictly below the modulus
+        if block_size + 2 > modulus_bytes:
+            block_size = modulus_bytes - 2
 
-    def decrypt(self, private_x: int, ciphertext: bytes) -> bytes:
-        """Decrypt an ElGamal ciphertext with private key ``private_x``."""
+        # 1. Store the 2-byte block size header so decrypt knows the chunk size
+        encrypted_data = block_size.to_bytes(2, "big")
+
+        # 2. Process message in chunks
+        for start_idx in range(0, len(plaintext), block_size):
+            chunk = plaintext[start_idx : start_idx + block_size]
+
+            # Build frame: [2-byte length] + [chunk data] + [zero padding]
+            chunk_length_bytes = len(chunk).to_bytes(2, "big")
+            padding_zeros = b"\x00" * (block_size - len(chunk))
+            framed_chunk = chunk_length_bytes + chunk + padding_zeros
+
+            message_int = int.from_bytes(framed_chunk, "big")
+
+            # 3. ElGamal encryption math
+            ephemeral_key = random_int(2, q - 1)
+            c1 = pow(g, ephemeral_key, p)
+            shared_secret = pow(public_y, ephemeral_key, p)
+            c2 = (message_int * shared_secret) % p
+
+            # 4. Serialize c1 and c2 as modulus-sized byte blocks
+            c1_bytes = c1.to_bytes(modulus_bytes, "big")
+            c2_bytes = c2.to_bytes(modulus_bytes, "big")
+            encrypted_data += c1_bytes + c2_bytes
+
+        return encrypted_data
+
+    def decrypt(self, private_x, ciphertext):
+        """Decrypt an ElGamal ciphertext with private key private_x."""
         p = self.p
-        k_bytes = (p.bit_length() + 7) // 8
-        if len(ciphertext) < 2 or (len(ciphertext) - 2) % (2 * k_bytes) != 0:
+        modulus_bytes = (p.bit_length() + 7) // 8
+        if len(ciphertext) < 2 or (len(ciphertext) - 2) % (2 * modulus_bytes) != 0:
             raise ValueError("malformed ciphertext length")
 
         block_size = int.from_bytes(ciphertext[:2], "big")
-        frame_len = 2 + block_size
-        out = b""
+        frame_length = 2 + block_size
         body = ciphertext[2:]
-        for i in range(0, len(body), 2 * k_bytes):
-            c1 = int.from_bytes(body[i:i + k_bytes], "big")
-            c2 = int.from_bytes(body[i + k_bytes:i + 2 * k_bytes], "big")
+        plaintext = b""
+
+        for start_idx in range(0, len(body), 2 * modulus_bytes):
+            c1 = int.from_bytes(body[start_idx : start_idx + modulus_bytes], "big")
+            c2 = int.from_bytes(body[start_idx + modulus_bytes : start_idx + 2 * modulus_bytes], "big")
+
             if c1 >= p:
                 raise ValueError("ciphertext block out of range")
-            s = pow(c1, private_x, p)          # shared secret = g^(k*x)
-            m = (c2 * modinv(s, p)) % p        # m = c2 * s^-1
-            full = m.to_bytes(k_bytes, "big")
-            frame = full[k_bytes - frame_len:]  # frame is right-aligned
-            n = int.from_bytes(frame[:2], "big")
-            out += frame[2:2 + n]
-        return out
+
+            # Diffie-Hellman shared secret: s = c1^x mod p
+            shared_secret = pow(c1, private_x, p)
+            # Unmask message: m = c2 * (shared_secret^-1) mod p
+            message_int = (c2 * pow(shared_secret, -1, p)) % p
+
+            # Extract right-aligned frame and read the original chunk
+            full_bytes = message_int.to_bytes(modulus_bytes, "big")
+            frame = full_bytes[modulus_bytes - frame_length:]
+            chunk_length = int.from_bytes(frame[:2], "big")
+            plaintext += frame[2 : 2 + chunk_length]
+
+        return plaintext
 
 
-def load_domain(path, p_bits: int = 2048, q_bits: int = 256) -> ElGamalDomain:
+def load_domain(path, p_bits=2048, q_bits=256):
     """Load the platform domain parameters, generating them on first use.
 
     If the cached file exists it is used as-is; otherwise a fresh Schnorr group
@@ -93,7 +188,7 @@ def load_domain(path, p_bits: int = 2048, q_bits: int = 256) -> ElGamalDomain:
         return generate_and_save_domain(path, p_bits=p_bits, q_bits=q_bits)
 
 
-def generate_and_save_domain(path, p_bits: int = 2048, q_bits: int = 256) -> ElGamalDomain:
+def generate_and_save_domain(path, p_bits=2048, q_bits=256):
     """Generate a Schnorr group (one-time cost, cached to ``path``).
 
     q is a q_bits prime; p is a p_bits prime with p = k*q + 1; g = h^((p-1)/q)
@@ -113,7 +208,6 @@ def generate_and_save_domain(path, p_bits: int = 2048, q_bits: int = 256) -> ElG
         h = random_int(2, p - 2)
         g = pow(h, (p - 1) // q, p)
 
-    import os
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump({"p": hex(p), "q": hex(q), "g": hex(g)}, f)
@@ -127,22 +221,22 @@ def generate_and_save_domain(path, p_bits: int = 2048, q_bits: int = 256) -> ElG
 # The public string is self-contained (carries p, q, g) so a recipient can
 # encrypt without needing the platform domain file.
 
-def serialize_elgamal_public(domain, key: dict) -> str:
+def serialize_elgamal_public(domain, key):
     return f"ELGAMAL.PUBLIC.{domain.p:x}.{domain.q:x}.{domain.g:x}.{key['y']:x}"
 
 
-def serialize_elgamal_private(domain, key: dict) -> str:
+def serialize_elgamal_private(domain, key):
     return f"ELGAMAL.PRIVATE.{domain.p:x}.{domain.q:x}.{domain.g:x}.{key['y']:x}.{key['x']:x}"
 
 
-def parse_elgamal_public(s: str) -> dict:
+def parse_elgamal_public(s):
     parts = s.split(".")
     if len(parts) != 6 or parts[0] != "ELGAMAL" or parts[1] != "PUBLIC":
         raise ValueError("invalid ElGamal public key string")
     return {"p": int(parts[2], 16), "q": int(parts[3], 16), "g": int(parts[4], 16), "y": int(parts[5], 16)}
 
 
-def parse_elgamal_private(s: str) -> dict:
+def parse_elgamal_private(s):
     parts = s.split(".")
     if len(parts) != 7 or parts[0] != "ELGAMAL" or parts[1] != "PRIVATE":
         raise ValueError("invalid ElGamal private key string")
