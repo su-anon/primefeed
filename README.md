@@ -2,9 +2,10 @@
 
 A highly secure, role-based bulletin board where cybersecurity researchers
 publish and share short Indicators of Compromise (IoCs) — malicious IPs, CVE
-IDs, malware hashes — with **100% from-scratch pure-Python asymmetric
-cryptography**. No external crypto libraries (`cryptography`, `hashlib`,
-`pycryptodome`, …) are used anywhere.
+IDs, malware hashes — with **from-scratch pure-Python asymmetric encryption
+algorithms** (RSA-3072 and ElGamal-2048) in accordance with CSE447 project
+specifications. Standard modules (`hashlib`, `hmac`, `secrets`, `pyotp`) are
+used for non-encryption hashing, MACs, and 2FA.
 
 ## Why asymmetric-only?
 

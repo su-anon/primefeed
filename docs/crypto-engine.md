@@ -1,46 +1,33 @@
-# The Pure Python Cryptography Engine
+# Cryptography Engine Architecture
 
-Every cryptographic operation in PrimeFeed is implemented from scratch on
-Python's native arbitrary-precision integers. **No external crypto libraries**
-(`cryptography`, `hashlib`, `pycryptodome`, OpenSSL bindings) are used.
+In strict compliance with the **CSE447 Lab Project** specification:
+- **Asymmetric Encryption Algorithms**: Implemented completely from scratch. No built-in framework encryption functions or third-party encryption wrappers are used. Two distinct asymmetric schemes are implemented from scratch: **RSA-3072** and **ElGamal-2048**.
+- **Non-Encryption Primitives**: Standard security primitives for non-encryption tasks (SHA-256 hashing, HMAC-SHA256 integrity tags, PBKDF2-HMAC-SHA256 password salting/hashing, and TOTP 2FA) utilize Python's standard library (`hashlib`, `hmac`, `secrets`) and `pyotp`.
 
 ## Files
 
 | File | Contents |
 |---|---|
-| `math_utils.py` | Entropy, random integers, prime generation, Miller-Rabin, modular inverse, constant-time compare |
-| `sha256_hmac.py` | SHA-256, HMAC-SHA256, PBKDF2-HMAC-SHA256, TOTP |
-| `rsa.py` | RSA-3072 keygen, PKCS#1 v1.5 encrypt/decrypt, sign/verify, serialization |
-| `elgamal.py` | ElGamal over a 2048-bit Schnorr group, serialization |
-| `totp.py` | Re-export of the TOTP functions (so `from app.crypto import totp` reads naturally) |
-| `key_manager.py` | Key Management Module (see its own doc) |
+| `math_utils.py` | Entropy (`secrets`), prime generation & Miller-Rabin test, modular inverse, constant-time compare (`hmac.compare_digest`) |
+| `sha256_hmac.py` | SHA-256 (`hashlib`), HMAC-SHA256 (`hmac`), PBKDF2-HMAC-SHA256 (`hashlib`), and TOTP (`pyotp`) |
+| `rsa.py` | **From scratch**: RSA-3072 keygen, PKCS#1 v1.5 encrypt/decrypt, sign/verify, serialization |
+| `elgamal.py` | **From scratch**: ElGamal over a 2048-bit Schnorr group, framing, encrypt/decrypt, serialization |
+| `totp.py` | Re-export of TOTP functions (so `from app.crypto import totp` reads naturally) |
+| `key_manager.py` | Key Management Module (lifecycle, storage, distribution, rotation) |
 
 ## math_utils.py
 
-- **Entropy**: `os.urandom` (the OS kernel CSPRNG). Python has no usable
-  math-CSPRNG, and even OpenSSL ultimately reseeds from the kernel, so this is
-  the correct entropy source rather than a re-implemented PRNG.
-- **`random_int(lo, hi)`**: uniform sampling via rejection sampling.
-- **`generate_prime(bits)`**: random odd candidate with the top bit set, fast
-  trial division by the first 1229 primes, then Miller-Rabin with 24 random
-  bases. Expected candidates per prime ≈ 0.693 × bits.
-- **`modinv(a, m)`**: extended Euclid algorithm.
-- **`constant_time_eq(a, b)`**: byte-wise XOR compare that always touches every
-  byte, so timing does not leak where two values differ.
+- **Entropy**: Cryptographically secure random generation via `secrets` (`secrets.token_bytes`, `secrets.randbelow`, `secrets.randbits`).
+- **`generate_prime(bits)`** / **`is_probable_prime(n)`**: Custom trial-division filter (first 1229 primes) + Miller-Rabin probabilistic test with 24 random bases. Required for from-scratch RSA and ElGamal key generation.
+- **`modinv(a, m)`**: Modular inverse using Python's native `pow(a, -1, m)`.
+- **`constant_time_eq(a, b)`**: Constant-time comparison using `hmac.compare_digest`.
 
 ## sha256_hmac.py
 
-- **SHA-256** (FIPS 180-4): message padding (0x80, zeros, 64-bit length),
-  64-word message schedule, 64-round compression with the standard K constants
-  and initial hash values. Verified against the NIST vectors (empty string,
-  "abc", 1,000,000 × "a").
-- **HMAC-SHA256** (RFC 2104): ipad/opad construction over our SHA-256.
-  Verified against the RFC 4231 test vector.
-- **PBKDF2-HMAC-SHA256** (RFC 8018): `U1 = HMAC(P, S || INT_32_BE(i))`,
-  `Uc = HMAC(P, Uc-1)`, XOR-folded. Used for password hashing with 120,000
-  iterations by default. Verified against the standard test vector.
-- **TOTP** (RFC 6238): HMAC-SHA256 of the 8-byte big-endian time counter,
-  RFC 4226 dynamic truncation, 6 digits, 30-second step, ±1 window.
+- **SHA-256**: High-performance FIPS 180-4 hashing via `hashlib.sha256`.
+- **HMAC-SHA256**: RFC 2104 keyed hashing via `hmac.new(..., hashlib.sha256)`. Used for session token signatures and integrity badges.
+- **PBKDF2-HMAC-SHA256**: RFC 8018 key derivation via `hashlib.pbkdf2_hmac("sha256", ...)`. Used for salted password hashing.
+- **TOTP**: RFC 6238 time-based one-time password protocol via `pyotp` (using SHA-256 digest, 6 digits, 30-second interval). Used for mandatory 2FA.
 
 ## rsa.py
 

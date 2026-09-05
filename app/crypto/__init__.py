@@ -1,7 +1,10 @@
-"""Pure Python cryptography engine -- no external crypto libraries.
+"""Cryptography engine.
 
-Implements, from scratch: SHA-256, HMAC-SHA256, PBKDF2-HMAC-SHA256, RSA-3072
-(with PKCS#1 v1.5), ElGamal (2048-bit Schnorr group), and TOTP.
+In accordance with CSE447 project specifications:
+- Asymmetric encryption algorithms (RSA-3072 with PKCS#1 v1.5 and ElGamal-2048
+  over a Schnorr group) are implemented from scratch.
+- Non-encryption primitives (SHA-256, HMAC, PBKDF2, and TOTP) are simplified
+  using standard Python modules and pyotp.
 """
 
 from . import elgamal, math_utils, rsa, sha256_hmac, totp  # noqa: F401

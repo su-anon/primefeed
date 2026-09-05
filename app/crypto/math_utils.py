@@ -6,32 +6,26 @@ itself has no usable math-CSPRNG, and even OpenSSL ultimately reseeds from the
 kernel, so this is the correct entropy source rather than a re-implemented PRNG.
 """
 
-import os
+import hmac
+import secrets
 
 
 def random_bytes(n: int) -> bytes:
-    """Return ``n`` cryptographically secure random bytes from the OS."""
-    return os.urandom(n)
+    """Return ``n`` cryptographically secure random bytes."""
+    return secrets.token_bytes(n)
 
 
 def random_int(lo: int, hi: int) -> int:
-    """Uniformly random integer in [lo, hi] (inclusive) via rejection sampling."""
-    span = hi - lo + 1
-    nbytes = (span.bit_length() + 7) // 8
-    while True:
-        v = int.from_bytes(os.urandom(nbytes), "big")
-        if v < span:
-            return lo + v
+    """Uniformly random integer in [lo, hi] (inclusive)."""
+    return lo + secrets.randbelow(hi - lo + 1)
 
 
 def random_odd_bits(bits: int) -> int:
     """Random odd integer with exactly ``bits`` bits (top bit and LSB set)."""
-    while True:
-        v = int.from_bytes(os.urandom((bits + 7) // 8), "big")
-        v |= 1 << (bits - 1)
-        v |= 1
-        if v.bit_length() == bits:
-            return v
+    v = secrets.randbits(bits)
+    v |= 1 << (bits - 1)
+    v |= 1
+    return v
 
 
 def _sieve(limit: int):
@@ -91,28 +85,13 @@ def generate_prime(bits: int, rounds: int = 24) -> int:
 
 
 def modinv(a: int, m: int) -> int:
-    """Modular inverse of ``a`` modulo ``m`` via the extended Euclid algorithm."""
-    a %= m
-    t, new_t = 0, 1
-    r, new_r = m, a
-    while new_r:
-        q = r // new_r
-        t, new_t = new_t, t - q * new_t
-        r, new_r = new_r, r - q * new_r
-    if r != 1:
+    """Modular inverse of ``a`` modulo ``m`` using Python's built-in pow."""
+    try:
+        return pow(a, -1, m)
+    except ValueError:
         raise ValueError("value is not invertible modulo m")
-    return t % m
 
 
 def constant_time_eq(a: bytes, b: bytes) -> bool:
-    """Compare two byte strings without leaking timing information.
-
-    A naive ``a == b`` short-circuits on the first differing byte and leaks
-    timing information; this version always touches every byte.
-    """
-    if len(a) != len(b):
-        return False
-    result = 0
-    for x, y in zip(a, b):
-        result |= x ^ y
-    return result == 0
+    """Compare two byte strings in constant time using standard library."""
+    return hmac.compare_digest(a, b)

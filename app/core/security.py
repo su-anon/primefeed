@@ -6,8 +6,10 @@ Everything is built on the from-scratch crypto engine (no hashlib/cryptography).
 - Integrity badges: HMAC over record ciphertexts to detect tampering.
 """
 
+import hmac
 import json
 import os
+import secrets
 import time
 
 from ..crypto import hmac_sha256, pbkdf2_hmac_sha256, sha256, sha256_hex
@@ -73,14 +75,14 @@ def verify_password(password: str, stored_hash: str) -> bool:
         dk = pbkdf2_hmac_sha256(password.encode(), bytes.fromhex(salt_hex), int(iterations), 32)
     except (ValueError, TypeError):
         return False
-    return hmac_sha256(dk.hex().encode(), b"verify") == hmac_sha256(expected.encode(), b"verify")
+    return hmac.compare_digest(dk.hex(), expected)
 
 
 # --- Sessions --------------------------------------------------------------
 
 def generate_session_token() -> str:
     """Generate a session token with >= 64 bits of entropy (we use 256)."""
-    return random_bytes(32).hex()
+    return secrets.token_hex(32)
 
 
 def sign_session_token(token: str, user_id: int, secret: str) -> str:
@@ -94,7 +96,7 @@ def verify_session_token(signed: str, secret: str) -> int | None:
     try:
         user_id, token, sig = signed.split(".")
         expected = hmac_sha256(secret.encode(), f"{user_id}:{token}".encode()).hex()
-        if hmac_sha256(sig.encode(), b"cmp") != hmac_sha256(expected.encode(), b"cmp"):
+        if not hmac.compare_digest(sig, expected):
             return None
         return int(user_id)
     except (ValueError, AttributeError):
@@ -142,7 +144,7 @@ def verify_integrity_badge(record_type: str, record_id: int, ciphertext: str,
                            badge: str, secret: str) -> bool:
     """Constant-time integrity check; returns True if the record is intact."""
     expected = make_integrity_badge(record_type, record_id, ciphertext, secret)
-    return hmac_sha256(badge.encode(), b"cmp") == hmac_sha256(expected.encode(), b"cmp")
+    return hmac.compare_digest(badge, expected)
 
 
 def log_integrity_failure(db, record_type: str, record_id: int, reason: str) -> None:
