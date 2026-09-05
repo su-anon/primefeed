@@ -3,7 +3,7 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>CIPHERDECK // JOURNAL - Cryptographic Registration &amp; Keypair Provisioning</title>
+<title>PrimeFeed Journal — Account Registration</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
@@ -138,241 +138,257 @@
 <body class="bg-surface-container-lowest text-on-surface antialiased min-h-screen flex flex-col font-body-md select-none">
 <!-- TOP APP / AUTH CONSOLE BAR (Contextual Authentication Shell) -->
 <header class="w-full bg-surface-container-lowest border-b border-outline-variant px-gutter-desktop h-14 flex items-center justify-between shrink-0">
-<div class="flex items-center gap-space-md">
-<span class="font-headline-sm text-headline-sm font-semibold tracking-wider text-primary uppercase">
-        CIPHERDECK // JOURNAL
-      </span>
-<span class="text-outline-variant font-label-code text-label-code">|</span>
-<a class="flex items-center gap-space-xs text-on-surface-variant hover:text-primary font-label-code text-label-code transition-colors duration-150" href="#">
-<span class="material-symbols-outlined text-[14px]">arrow_back</span>
-<span>← Back to Journal &amp; Threat Feeds</span>
-</a>
-</div>
-<div class="flex items-center gap-space-md">
-<!-- ZERO-KNOWLEDGE CLIENT BOUNDARY STATUS BADGE -->
-<div class="flex items-center gap-space-xs px-2 py-1 bg-secondary-container/10 border border-secondary text-secondary font-telemetry-micro text-telemetry-micro">
-<span class="inline-block w-1.5 h-1.5 bg-secondary animate-pulse"></span>
-<span>ZERO-KNOWLEDGE CLIENT BOUNDARY</span>
-</div>
-<div class="px-2 py-1 bg-surface-container-high border border-outline-variant text-primary font-label-code text-label-code">
-        SEC_ZONE::AUTH
-      </div>
-</div>
-</header>
-<!-- TELEMETRY SUB-STRIP -->
-<aside class="w-full bg-surface-container-low border-b border-outline-variant px-gutter-desktop py-1 flex items-center justify-between font-telemetry-micro text-telemetry-micro text-outline shrink-0 overflow-x-auto">
-<div class="flex items-center gap-space-lg whitespace-nowrap">
-<span>CLIENT_SESSION_ID: <span class="text-primary">0x9B41E_INIT</span></span>
-<span class="text-outline-variant">/</span>
-<span>ENCLAVE: <span class="text-on-surface">SUB-SYS.EPHEMERAL</span></span>
-<span class="text-outline-variant">/</span>
-<span>ASYMMETRIC ENGINE: <span class="text-tertiary">RSA-3072 + ELGAMAL (2048-BIT SCHNORR)</span></span>
-</div>
-<div class="flex items-center gap-space-xs whitespace-nowrap">
-<span class="text-outline">STATUS:</span>
-<span class="text-secondary font-bold">[ENCLAVE_READY]</span>
-</div>
-</aside>
-<!-- MAIN REGISTRATION CANVASES -->
-<main class="flex-1 w-full max-w-5xl mx-auto px-gutter-desktop py-space-xl flex flex-col justify-center">
-<!-- MAIN CENTRAL CARD: Constructivist Editorial Deck -->
-<section class="w-full bg-surface-container-low border border-outline-variant shadow-none relative">
-<!-- Reticle corner ticks (Cypherpunk terminal markers) -->
-<div class="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-primary pointer-events-none"></div>
-<div class="absolute -top-[1px] -right-[1px] w-2 h-2 border-t-2 border-r-2 border-primary pointer-events-none"></div>
-<div class="absolute -bottom-[1px] -left-[1px] w-2 h-2 border-b-2 border-l-2 border-primary pointer-events-none"></div>
-<div class="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-primary pointer-events-none"></div>
-<!-- HEADER SEGMENTED SWITCHER / TABS -->
-<nav class="grid grid-cols-4 border-b border-outline-variant bg-surface-container-lowest font-label-code text-label-code uppercase tracking-wider">
-<button class="py-3 px-space-md text-center text-outline hover:text-on-surface hover:bg-surface-container transition-colors duration-150 border-r border-outline-variant flex items-center justify-center gap-space-xs" type="button">
-<span class="text-outline-variant">01.</span> Sign In
-        </button>
-<button class="py-3 px-space-md text-center bg-surface-container-low text-primary border-b-2 border-primary border-r border-outline-variant flex items-center justify-center gap-space-xs" type="button">
-<span class="text-primary-container">02.</span> Register
-        </button>
-<button class="py-3 px-space-md text-center text-outline hover:text-on-surface hover:bg-surface-container transition-colors duration-150 border-r border-outline-variant flex items-center justify-center gap-space-xs" type="button">
-<span class="text-outline-variant">03.</span> TOTP 2FA
-        </button>
-<button class="py-3 px-space-md text-center text-outline hover:text-on-surface hover:bg-surface-container transition-colors duration-150 flex items-center justify-center gap-space-xs" type="button">
-<span class="text-outline-variant">04.</span> Recovery
-        </button>
-</nav>
-<!-- CARD INTERIOR -->
-<div class="p-panel-padding-spacious flex flex-col gap-space-lg">
-<!-- CARD HEADER / EYEBROW -->
-<header class="border-b border-outline-variant pb-space-md">
-<div class="flex items-center justify-between mb-space-xs">
-<span class="font-telemetry-micro text-telemetry-micro text-primary flex items-center gap-space-xs tracking-widest">
-<span class="inline-block w-1.5 h-1.5 bg-primary"></span>
-              ENCLAVE PROVISIONING // ZERO-KNOWLEDGE PROFILE
-            </span>
-<span class="font-telemetry-micro text-telemetry-micro text-outline">CLIENT_SIDE_ONLY</span>
-</div>
-<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
-            Create your cryptographic identity
-          </h1>
-<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs max-w-3xl">
-            All profile fields are encrypted on your client device using RSA-3072 before database transmission. No plaintext ever leaves your browser.
-          </p>
-</header>
-<!-- REGISTRATION FORM -->
-<form class="flex flex-col gap-space-md" onsubmit="event.preventDefault();">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
-<!-- FIELD 1: RESEARCHER HANDLE -->
-<div class="flex flex-col gap-space-xs">
-<label class="font-label-code text-label-code text-on-surface-variant flex justify-between" for="handle">
-<span>PUBLIC IDENTIFIER (NON-ENCRYPTED)</span>
-<span class="text-outline-variant font-telemetry-micro">REQ // ID</span>
-</label>
-<div class="flex items-stretch bg-surface-container-lowest border border-outline-variant focus-within:border-primary">
-<span class="px-space-md flex items-center text-outline bg-surface-container-high font-label-code border-r border-outline-variant">@</span>
-<input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="handle" placeholder="researcher_handle" type="text" />
-</div>
-<span class="font-telemetry-micro text-telemetry-micro text-outline">Publicly visible on intelligence audit logs and commit digests.</span>
-</div>
-<!-- FIELD 2: ENCRYPTED EMAIL / CONTACT -->
-<div class="flex flex-col gap-space-xs">
-<label class="font-label-code text-label-code text-on-surface-variant flex justify-between items-center" for="contact">
-<span class="flex items-center gap-1">
-<span>ENCRYPTED PROFILE FIELD (RSA-3072 CLIENT-SEALED)</span>
-</span>
-<span class="px-1.5 py-0.5 bg-secondary-container/10 border border-secondary text-secondary font-telemetry-micro text-telemetry-micro">
-                  Encrypted before DB insert
-                </span>
-</label>
-<div class="flex items-stretch bg-surface-container-lowest border border-outline-variant focus-within:border-primary">
-<span class="px-space-md flex items-center text-primary font-label-code border-r border-outline-variant bg-surface-container-high">
-<span class="material-symbols-outlined text-[15px]">lock</span>
-</span>
-<input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="contact" placeholder="researcher@defense.lab" type="email"/>
-</div>
-<span class="font-telemetry-micro text-telemetry-micro text-outline">Encrypted payload stored as client ciphertext blob. Inaccessible to host operator.</span>
-</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
-<!-- FIELD 3: MASTER PASSPHRASE -->
-<div class="flex flex-col gap-space-xs">
-<div class="flex justify-between items-center">
-<label class="font-label-code text-label-code text-on-surface-variant" for="passphrase">MASTER PASSPHRASE (PBKDF2-HMAC-SHA256 DERIVED)</label>
-<span class="font-telemetry-micro text-telemetry-micro text-secondary font-bold">[ENTROPY: 128-BIT HIGH]</span>
-</div>
-<div class="flex items-stretch bg-surface-container-lowest border border-outline-variant focus-within:border-primary">
-<input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="passphrase" type="password" />
-<div class="flex items-center px-space-md border-l border-outline-variant bg-surface-container-high text-outline">
-<span class="material-symbols-outlined text-[15px]">visibility</span>
-</div>
-</div>
-<!-- Strength Bars -->
-<div class="grid grid-cols-4 gap-1 mt-1">
-<div class="h-1 bg-secondary"></div>
-<div class="h-1 bg-secondary"></div>
-<div class="h-1 bg-secondary"></div>
-<div class="h-1 bg-secondary"></div>
-</div>
-<span class="font-telemetry-micro text-telemetry-micro text-outline">PBKDF2-HMAC-SHA256: 600,000 salt iterations derived client-side to seal root vault.</span>
-</div>
-<!-- FIELD 4: CONFIRM PASSPHRASE -->
-<div class="flex flex-col gap-space-xs">
-<div class="flex justify-between items-center">
-<label class="font-label-code text-label-code text-on-surface-variant" for="confirm-passphrase">CONFIRM MASTER PASSPHRASE</label>
-<span class="font-telemetry-micro text-telemetry-micro text-secondary flex items-center gap-1">
-<span class="material-symbols-outlined text-[13px]">check_circle</span> MATCH_CONFIRMED
-                </span>
-</div>
-<div class="flex items-stretch bg-surface-container-lowest border border-secondary focus-within:border-secondary">
-<input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="confirm-passphrase" type="password" />
-<div class="flex items-center px-space-md border-l border-outline-variant bg-surface-container-high text-secondary">
-<span class="material-symbols-outlined text-[15px]">verified_user</span>
-</div>
-</div>
-<span class="font-telemetry-micro text-telemetry-micro text-outline">Zero server storage. Unrecoverable if forgotten. Local key unwrapping only.</span>
-</div>
-</div>
-<!-- KEYPAIR GENERATION & PROVISIONING PREVIEW BOX -->
-<div class="mt-space-xs bg-surface-container-lowest border border-outline-variant p-panel-padding-compact">
-<div class="flex items-center justify-between border-b border-outline-variant pb-2 mb-space-sm">
-<div class="font-label-code text-label-code text-primary flex items-center gap-space-xs">
-<span class="material-symbols-outlined text-[15px]">key</span>
-<span>Automated In-Enclave Key Provisioning:</span>
-</div>
-<span class="font-telemetry-micro text-telemetry-micro text-outline font-normal">EXEC_TIME: ~180MS</span>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm font-label-code text-label-code">
-<!-- Step 1 -->
-<div class="flex items-start gap-space-xs bg-surface-container p-2 border border-outline-variant/60">
-<span class="text-secondary font-bold">[✔]</span>
-<div class="flex flex-col">
-<span class="text-on-surface">Generate RSA-3072 Identity Keypair</span>
-<span class="text-outline font-telemetry-micro text-telemetry-micro">~128-bit security, PKCS#1 v1.5</span>
-</div>
-</div>
-<!-- Step 2 -->
-<div class="flex items-start gap-space-xs bg-surface-container p-2 border border-outline-variant/60">
-<span class="text-secondary font-bold">[✔]</span>
-<div class="flex flex-col">
-<span class="text-on-surface">Generate ElGamal Schnorr Group Pair</span>
-<span class="text-outline font-telemetry-micro text-telemetry-micro">2048-bit prime, 256-bit subgroup</span>
-</div>
-</div>
-<!-- Step 3 -->
-<div class="flex items-start gap-space-xs bg-surface-container p-2 border border-outline-variant/60">
-<span class="text-secondary font-bold">[✔]</span>
-<div class="flex flex-col">
-<span class="text-on-surface">Seed RFC 6238 TOTP Secret</span>
-<span class="text-outline font-telemetry-micro text-telemetry-micro">Dynamic HMAC-SHA256</span>
-</div>
-</div>
-</div>
-<!-- Security Notice Box -->
-<div class="mt-space-sm bg-surface-container-high border-l-2 border-primary p-2 flex items-start gap-space-sm">
-<span class="material-symbols-outlined text-primary text-[16px] shrink-0 mt-0.5">shield</span>
-<p class="font-body-sm text-body-sm text-on-surface-variant">
-<strong class="text-primary font-bold">Zero-Knowledge Guarantee:</strong> Your private keys are wrapped and stored client-side or wrapped with your master passphrase. Server administrators have zero access.
-              </p>
-</div>
-</div>
-<!-- PRIMARY ACTION TRIGGER -->
-<div class="pt-space-xs">
-<button class="w-full bg-primary-container text-on-primary-fixed hover:bg-primary font-label-code text-label-code py-3 px-space-lg flex items-center justify-center gap-space-sm font-bold uppercase tracking-wider transition-colors duration-150 cursor-pointer" type="submit">
-<span>GENERATE KEYPAIRS &amp; PROCEED TO 2FA SETUP</span>
-<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-</button>
-</div>
-<!-- BOTTOM CARD BADGES -->
-<div class="pt-space-sm border-t border-outline-variant flex flex-wrap items-center justify-between gap-space-xs font-telemetry-micro text-telemetry-micro text-outline">
-<div class="flex items-center gap-1 px-2 py-1 bg-surface-container border border-outline-variant">
-<span class="material-symbols-outlined text-[13px] text-tertiary">memory</span>
-<span class="text-on-surface-variant">PURE ASYMMETRIC:</span>
-<span class="text-primary">RSA-3072 + ElGamal 2048</span>
-</div>
-<div class="flex items-center gap-1 px-2 py-1 bg-surface-container border border-outline-variant">
-<span class="material-symbols-outlined text-[13px] text-secondary">verified</span>
-<span class="text-on-surface-variant">ZERO THIRD-PARTY LIBS:</span>
-<span class="text-secondary">Pure Python &amp; Native WebCrypto</span>
-</div>
-<div class="flex items-center gap-1 px-2 py-1 bg-surface-container border border-outline-variant">
-<span class="material-symbols-outlined text-[13px] text-primary">phonelink_lock</span>
-<span class="text-on-surface-variant">RFC 6238 COMPLIANT:</span>
-<span class="text-on-surface">TOTP Setup Enforced</span>
-</div>
-</div>
-</form>
-</div>
-</section>
-</main>
-<!-- SHARED COMPONENT FOOTER -->
-<footer class="flex flex-col md:flex-row justify-between items-center w-full px-gutter-desktop py-panel-padding-compact max-w-full border-t border-outline-variant bg-surface-container-lowest gap-space-sm mt-auto">
-<div class="font-telemetry-micro text-telemetry-micro text-outline">
-      © 2025 CIPHERDECK JOURNAL. ZERO-KNOWLEDGE PAYLOAD ARCHITECTURE // RFC 6238 COMPLIANT. PURE ASYMMETRIC STATE.
+    <div class="flex items-center gap-space-md">
+      <a href="/home/" class="font-headline-sm text-headline-sm font-semibold tracking-wider text-primary uppercase flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-xl">shield_lock</span>
+        <span>PrimeFeed Journal</span>
+      </a>
+      <span class="text-outline-variant font-label-code text-label-code">|</span>
+      <a class="flex items-center gap-space-xs text-on-surface-variant hover:text-primary font-label-code text-label-code transition-colors duration-150" href="/home/">
+        <span class="material-symbols-outlined text-[14px]">arrow_back</span>
+        <span>Back to Feed</span>
+      </a>
     </div>
-<nav class="flex items-center gap-space-md flex-wrap font-label-code text-label-code">
-<a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">ROOT_CERT</a>
-<a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">PGP_KEYS</a>
-<a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">HMAC_VALIDATION</a>
-<a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">THREAT_FEED</a>
-<a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">CANARY_LOG</a>
-</nav>
-</footer>
-<script src="/assets/api.js?v=3"></script>
-<script src="/assets/app-register.js?v=3"></script>
+    <div class="flex items-center gap-space-md">
+      <div class="flex items-center gap-space-xs px-2.5 py-1 bg-secondary-container/10 border border-secondary text-secondary font-telemetry-micro text-telemetry-micro">
+        <span class="inline-block w-1.5 h-1.5 bg-secondary animate-pulse"></span>
+        <span>END-TO-END ENCRYPTED</span>
+      </div>
+      <div class="px-2 py-1 bg-surface-container-high border border-outline-variant text-primary font-label-code text-label-code">
+        SECURE REGISTRATION
+      </div>
+    </div>
+  </header>
+
+  <!-- STATUS SUB-STRIP -->
+  <aside class="w-full bg-surface-container-low border-b border-outline-variant px-gutter-desktop py-1 flex items-center justify-between font-telemetry-micro text-telemetry-micro text-outline shrink-0 overflow-x-auto">
+    <div class="flex items-center gap-space-lg whitespace-nowrap">
+      <span>ENCRYPTION: <span class="text-tertiary">ACTIVE</span></span>
+      <span class="text-outline-variant">/</span>
+      <span>STORAGE: <span class="text-on-surface">CLIENT-SIDE ENCRYPTED</span></span>
+      <span class="text-outline-variant">/</span>
+      <span>TWO-FACTOR: <span class="text-primary">AUTHENTICATOR APP (TOTP)</span></span>
+    </div>
+    <div class="flex items-center gap-space-xs whitespace-nowrap">
+      <span class="text-outline">SYSTEM:</span>
+      <span class="text-secondary font-bold">[READY]</span>
+    </div>
+  </aside>
+
+  <!-- MAIN REGISTRATION CANVASES -->
+  <main class="flex-1 w-full max-w-5xl mx-auto px-gutter-desktop py-space-xl flex flex-col justify-center">
+    <section class="w-full bg-surface-container-low border border-outline-variant shadow-none relative">
+      <div class="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-primary pointer-events-none"></div>
+      <div class="absolute -top-[1px] -right-[1px] w-2 h-2 border-t-2 border-r-2 border-primary pointer-events-none"></div>
+      <div class="absolute -bottom-[1px] -left-[1px] w-2 h-2 border-b-2 border-l-2 border-primary pointer-events-none"></div>
+      <div class="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-primary pointer-events-none"></div>
+
+      <!-- HEADER SEGMENTED SWITCHER / TABS -->
+      <nav class="grid grid-cols-2 border-b border-outline-variant bg-surface-container-lowest font-label-code text-label-code uppercase tracking-wider">
+        <a href="/register/" class="py-3 px-space-md text-center bg-surface-container-low text-primary border-b-2 border-primary border-r border-outline-variant flex items-center justify-center gap-space-xs font-bold">
+          <span class="material-symbols-outlined text-sm">person_add</span>
+          <span>Create Account</span>
+        </a>
+        <a href="/login/#signin" class="py-3 px-space-md text-center text-outline hover:text-on-surface hover:bg-surface-container transition-colors duration-150 flex items-center justify-center gap-space-xs">
+          <span class="material-symbols-outlined text-sm">login</span>
+          <span>Sign In</span>
+        </a>
+      </nav>
+
+      <!-- CARD INTERIOR -->
+      <div class="p-panel-padding-spacious flex flex-col gap-space-lg">
+        <header class="border-b border-outline-variant pb-space-md">
+          <div class="flex items-center justify-between mb-space-xs">
+            <span class="font-telemetry-micro text-telemetry-micro text-primary flex items-center gap-space-xs tracking-widest">
+              <span class="inline-block w-1.5 h-1.5 bg-primary animate-pulse"></span>
+              ACCOUNT REGISTRATION · CLIENT ENCRYPTED
+            </span>
+            <span class="font-telemetry-micro text-telemetry-micro text-secondary flex items-center gap-1">
+              <span class="inline-block w-1.5 h-1.5 bg-secondary rounded-full"></span>
+              SECURE
+            </span>
+          </div>
+          <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+            Create your account
+          </h1>
+          <p class="font-body-md text-body-md text-on-surface-variant mt-space-xs max-w-3xl">
+            Your personal profile and dispatches are encrypted directly on your device. Plaintext contact info is never stored on the server.
+          </p>
+        </header>
+
+        <!-- REGISTRATION FORM -->
+        <form class="flex flex-col gap-space-md" onsubmit="event.preventDefault();">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+            <!-- FIELD 1: USERNAME -->
+            <div class="flex flex-col gap-space-xs">
+              <label class="font-label-code text-label-code text-on-surface-variant flex justify-between" for="handle">
+                <span>USERNAME (PUBLIC)</span>
+                <span class="text-outline-variant font-telemetry-micro">REQUIRED</span>
+              </label>
+              <div class="flex items-stretch bg-surface-container-lowest border border-outline-variant focus-within:border-primary transition-colors">
+                <span class="px-space-md flex items-center text-outline bg-surface-container-high font-label-code border-r border-outline-variant">@</span>
+                <input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="handle" placeholder="Choose a username" type="text" autocomplete="username" required />
+              </div>
+              <span class="font-telemetry-micro text-telemetry-micro text-outline">Your public handle on security research feeds and dispatches.</span>
+            </div>
+
+            <!-- FIELD 2: EMAIL -->
+            <div class="flex flex-col gap-space-xs">
+              <label class="font-label-code text-label-code text-on-surface-variant flex justify-between items-center" for="contact">
+                <span class="flex items-center gap-1">
+                  <span>EMAIL ADDRESS</span>
+                </span>
+                <span class="px-1.5 py-0.5 bg-secondary-container/10 border border-secondary/60 text-secondary font-telemetry-micro text-telemetry-micro">
+                  Encrypted at Rest
+                </span>
+              </label>
+              <div class="flex items-stretch bg-surface-container-lowest border border-outline-variant focus-within:border-primary transition-colors">
+                <span class="px-space-md flex items-center text-primary font-label-code border-r border-outline-variant bg-surface-container-high">
+                  <span class="material-symbols-outlined text-[15px]">lock</span>
+                </span>
+                <input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="contact" placeholder="you@example.com" type="email" autocomplete="email" required />
+              </div>
+              <span class="font-telemetry-micro text-telemetry-micro text-outline">Encrypted on your device before saving. Inaccessible to system administrators.</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+            <!-- FIELD 3: PASSWORD -->
+            <div class="flex flex-col gap-space-xs">
+              <div class="flex justify-between items-center">
+                <label class="font-label-code text-label-code text-on-surface-variant" for="passphrase">PASSWORD</label>
+                <span id="passphrase-entropy" class="font-telemetry-micro text-telemetry-micro text-outline font-normal">[STRENGTH: ENTER PASSWORD]</span>
+              </div>
+              <div class="flex items-stretch bg-surface-container-lowest border border-outline-variant focus-within:border-primary transition-colors">
+                <input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="passphrase" type="password" autocomplete="new-password" placeholder="Enter secure password" required />
+                <button type="button" id="toggle-passphrase" class="flex items-center px-space-md border-l border-outline-variant bg-surface-container-high text-outline hover:text-on-surface transition-colors cursor-pointer" title="Toggle password visibility">
+                  <span class="material-symbols-outlined text-[15px]" id="eye-icon">visibility</span>
+                </button>
+              </div>
+              <!-- Strength Bars -->
+              <div class="grid grid-cols-4 gap-1 mt-1" id="entropy-bars">
+                <div class="h-1 bg-outline-variant/30 rounded-full transition-colors duration-200" id="ebar-1"></div>
+                <div class="h-1 bg-outline-variant/30 rounded-full transition-colors duration-200" id="ebar-2"></div>
+                <div class="h-1 bg-outline-variant/30 rounded-full transition-colors duration-200" id="ebar-3"></div>
+                <div class="h-1 bg-outline-variant/30 rounded-full transition-colors duration-200" id="ebar-4"></div>
+              </div>
+              <span class="font-telemetry-micro text-telemetry-micro text-outline">Securely hashed to protect your account against unauthorized access.</span>
+            </div>
+
+            <!-- FIELD 4: CONFIRM PASSWORD -->
+            <div class="flex flex-col gap-space-xs">
+              <div class="flex justify-between items-center">
+                <label class="font-label-code text-label-code text-on-surface-variant" for="confirm-passphrase">CONFIRM PASSWORD</label>
+                <span id="confirm-match-badge" class="font-telemetry-micro text-telemetry-micro text-outline flex items-center gap-1 font-normal">
+                  [ENTER TO CONFIRM]
+                </span>
+              </div>
+              <div id="confirm-input-wrap" class="flex items-stretch bg-surface-container-lowest border border-outline-variant focus-within:border-primary transition-colors">
+                <input class="w-full bg-transparent border-0 text-on-surface font-body-md py-2 px-space-md focus:ring-0 focus:outline-none" id="confirm-passphrase" type="password" autocomplete="new-password" placeholder="Re-enter password" required />
+                <div id="confirm-icon-box" class="flex items-center px-space-md border-l border-outline-variant bg-surface-container-high text-outline transition-colors">
+                  <span class="material-symbols-outlined text-[15px]" id="confirm-icon">lock</span>
+                </div>
+              </div>
+              <span class="font-telemetry-micro text-telemetry-micro text-outline">Passwords cannot be reset if forgotten because keys are encrypted client-side.</span>
+            </div>
+          </div>
+
+          <!-- KEYPAIR GENERATION & PROVISIONING PREVIEW BOX -->
+          <div class="mt-space-xs bg-surface-container-lowest border border-outline-variant p-panel-padding-compact">
+            <div class="flex items-center justify-between border-b border-outline-variant pb-2 mb-space-sm">
+              <div class="font-label-code text-label-code text-primary flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-[15px]">security</span>
+                <span>Automatic Security &amp; Encryption Setup:</span>
+              </div>
+              <span id="key-exec-time" class="font-telemetry-micro text-telemetry-micro text-outline font-normal">STATUS: READY</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm font-label-code text-label-code">
+              <!-- Step 1 -->
+              <div id="card-rsa" class="flex items-start gap-space-xs bg-surface-container p-2 border border-outline-variant/60 transition-colors">
+                <span id="step-rsa-status" class="text-outline font-bold font-mono">[·]</span>
+                <div class="flex flex-col">
+                  <span class="text-on-surface">Account Identity Keys</span>
+                  <span class="text-outline font-telemetry-micro text-telemetry-micro">Public-key identity encryption</span>
+                </div>
+              </div>
+              <!-- Step 2 -->
+              <div id="card-elgamal" class="flex items-start gap-space-xs bg-surface-container p-2 border border-outline-variant/60 transition-colors">
+                <span id="step-elgamal-status" class="text-outline font-bold font-mono">[·]</span>
+                <div class="flex flex-col">
+                  <span class="text-on-surface">Secure Messaging Keys</span>
+                  <span class="text-outline font-telemetry-micro text-telemetry-micro">End-to-end message encryption</span>
+                </div>
+              </div>
+              <!-- Step 3 -->
+              <div id="card-totp" class="flex items-start gap-space-xs bg-surface-container p-2 border border-outline-variant/60 transition-colors">
+                <span id="step-totp-status" class="text-outline font-bold font-mono">[·]</span>
+                <div class="flex flex-col">
+                  <span class="text-on-surface">Two-Factor Authentication</span>
+                  <span class="text-outline font-telemetry-micro text-telemetry-micro">Authenticator app verification</span>
+                </div>
+              </div>
+            </div>
+            <!-- Security Notice Box -->
+            <div class="mt-space-sm bg-surface-container-high border-l-2 border-primary p-2.5 flex items-start gap-space-sm">
+              <span class="material-symbols-outlined text-primary text-[16px] shrink-0 mt-0.5">shield</span>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">
+                <strong class="text-primary font-bold">Privacy Guarantee:</strong> Your private keys and personal data are encrypted with your password. Server administrators cannot read your private messages or contact details.
+              </p>
+            </div>
+          </div>
+
+          <!-- PRIMARY ACTION TRIGGER -->
+          <div class="pt-space-xs">
+            <button class="w-full bg-primary-container text-on-primary-fixed hover:bg-primary font-label-code text-label-code py-3 px-space-lg flex items-center justify-center gap-space-sm font-bold uppercase tracking-wider transition-colors duration-150 cursor-pointer" type="submit">
+              <span>CREATE ACCOUNT &amp; CONTINUE TO 2FA SETUP</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </button>
+          </div>
+
+          <!-- Sign In Direct Link -->
+          <div class="mt-space-xs text-center">
+            <span class="font-body-sm text-body-sm text-outline">Already have an account?</span>
+            <a href="/login/#signin" class="ml-2 font-label-code text-body-sm text-primary hover:underline font-bold uppercase tracking-wider inline-flex items-center gap-1">
+              <span>Sign In</span>
+              <span class="material-symbols-outlined text-xs">arrow_forward</span>
+            </a>
+          </div>
+
+          <!-- BOTTOM CARD BADGES -->
+          <div class="pt-space-sm border-t border-outline-variant flex flex-wrap items-center justify-between gap-space-xs font-telemetry-micro text-telemetry-micro text-outline">
+            <div class="flex items-center gap-1 px-2 py-1 bg-surface-container border border-outline-variant">
+              <span class="material-symbols-outlined text-[13px] text-tertiary">lock</span>
+              <span class="text-on-surface-variant">ENCRYPTION:</span>
+              <span class="text-primary">Public-Key Encrypted</span>
+            </div>
+            <div class="flex items-center gap-1 px-2 py-1 bg-surface-container border border-outline-variant">
+              <span class="material-symbols-outlined text-[13px] text-secondary">verified</span>
+              <span class="text-on-surface-variant">ZERO PLAINTEXT:</span>
+              <span class="text-secondary">Client-Side Encrypted</span>
+            </div>
+            <div class="flex items-center gap-1 px-2 py-1 bg-surface-container border border-outline-variant">
+              <span class="material-symbols-outlined text-[13px] text-primary">phonelink_lock</span>
+              <span class="text-on-surface-variant">TWO-FACTOR:</span>
+              <span class="text-on-surface">Authenticator App Required</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- SHARED COMPONENT FOOTER -->
+  <footer class="flex flex-col md:flex-row justify-between items-center w-full px-gutter-desktop py-panel-padding-compact max-w-full border-t border-outline-variant bg-surface-container-lowest gap-space-sm mt-auto">
+    <div class="font-telemetry-micro text-telemetry-micro text-outline">
+      © 2026 PrimeFeed Journal. Secure information and threat intelligence feed.
+    </div>
+    <nav class="flex items-center gap-space-md flex-wrap font-label-code text-label-code">
+      <a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="/home/">FEED</a>
+      <a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="/messages/">MESSAGES</a>
+      <a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">SECURITY POLICY</a>
+      <a class="text-outline font-label-code text-label-code uppercase tracking-wider hover:text-primary underline decoration-primary decoration-1 underline-offset-4 cursor-pointer" href="#">PRIVACY</a>
+    </nav>
+  </footer>
+<script src="/assets/api.js?v=6"></script>
+<script src="/assets/app-register.js?v=6"></script>
 </body></html>

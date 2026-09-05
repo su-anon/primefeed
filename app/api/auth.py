@@ -74,12 +74,16 @@ def register(request: Request, body: dict):
     qr = segno.make(totp_uri)
     qr_svg_data_uri = qr.svg_data_uri(scale=5, border=2, light="#FFFFFF", dark="#000000")
 
+    ticket = random_bytes(16).hex()
+    ctx.pending_2fa[ticket] = {"user_id": user_id, "expires": now + 300}
+
     return {
         "ok": True,
         "user_id": user_id,
         "totp_secret": totp_secret,
         "totp_uri": totp_uri,
         "totp_qr": qr_svg_data_uri,
+        "ticket": ticket,
         "message": "registration complete; scan QR code or enroll the TOTP secret in your authenticator app",
     }
 

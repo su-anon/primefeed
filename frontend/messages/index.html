@@ -103,12 +103,12 @@
 <!-- Quick Search -->
 <div class="relative hidden sm:block">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-sm">search</span>
-<input class="w-48 lg:w-64 pl-9 pr-3 py-1.5 rounded-full bg-surface-container border border-outline-variant text-xs text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-1 focus:ring-primary focus:w-72 transition-all" placeholder="Search dispatches, IoCs, authors..." type="text"/>
+<input id="pf-msg-search" class="w-48 lg:w-64 pl-9 pr-3 py-1.5 rounded-full bg-surface-container border border-outline-variant text-xs text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-1 focus:ring-primary focus:w-72 transition-all" placeholder="Filter messages by peer or content..." type="text"/>
 </div>
-<!-- Write Dispatch CTA -->
-<a class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary text-on-primary text-xs font-semibold hover:bg-primary/90 transition-all shadow-sm" href="#">
+<!-- Write Message CTA -->
+<a id="pf-new-msg-cta" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary text-on-primary text-xs font-semibold hover:bg-primary/90 transition-all shadow-sm cursor-pointer" href="#compose">
 <span class="material-symbols-outlined text-sm">edit_square</span>
-<span class="hidden sm:inline">Write Dispatch</span>
+<span class="hidden sm:inline">New Message</span>
 </a>
 <!-- Author / User Profile Dropdown Pill -->
 <div class="flex items-center gap-2 pl-2 border-l border-outline-variant">
@@ -123,23 +123,28 @@
 </div>
 </div>
 </header>
-<!-- EDITORIAL SUB-BAR / TOPIC TICKER -->
-<div class="border-b border-outline-variant/60 bg-surface-container-lowest/70 backdrop-blur-sm py-2">
+<!-- EDITORIAL SUB-BAR / DYNAMIC TOPIC TICKER -->
+<div class="border-b border-outline-variant/60 bg-surface-container-lowest/80 backdrop-blur-md py-2 overflow-hidden">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs text-on-surface-variant">
-<div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
-<span class="font-mono text-[11px] font-semibold text-secondary uppercase tracking-wider flex items-center gap-1 shrink-0">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Live Feed
-        </span>
+<div class="flex items-center gap-2 overflow-hidden py-0.5">
+<span class="font-mono text-[11px] font-semibold text-secondary uppercase tracking-wider flex items-center gap-1.5 shrink-0 px-2 py-0.5 rounded bg-secondary/10 border border-secondary/20">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span id="pf-dynamic-ticker-tag">ENCRYPTED ENCLAVE</span>
+</span>
 <span class="text-outline">/</span>
-<span class="truncate">CVE-2025-0149 mitigation live in LibSchnorr 3.1</span>
-<span class="text-outline">·</span>
-<span class="text-on-surface-variant/70 shrink-0 hidden md:inline">24 active peer validators online</span>
+<span id="pf-dynamic-ticker-text" class="truncate font-mono transition-all duration-300 text-on-surface">Dual-layer RSA-3072 identity envelope active</span>
+<span class="text-outline hidden md:inline">·</span>
+<span id="pf-active-validators-count" class="text-on-surface-variant/80 shrink-0 hidden md:inline font-mono">active researchers registered</span>
 </div>
 <div class="hidden sm:flex items-center gap-4 text-xs font-mono shrink-0 pl-4">
-<span class="text-secondary flex items-center gap-1">
+<span class="text-secondary flex items-center gap-1 bg-secondary/10 px-2 py-0.5 rounded-full border border-secondary/20">
 <span class="material-symbols-outlined text-xs">verified</span> HMAC Verified
-        </span>
-<span class="text-on-surface-variant/70">Warrant Canary: Normal</span>
+</span>
+<span class="text-on-surface-variant/80 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Canary Valid</span>
+</span>
+<span id="pf-live-clock" class="text-outline hidden xl:inline">00:00:00 UTC</span>
 </div>
 </div>
 </div>
@@ -222,7 +227,7 @@
 <!-- Bottom Bar -->
 <div class="pt-6 border-t border-outline-variant/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant/80 font-mono">
 <div>
-          © 2025 CipherDeck Journal. Published under CC BY-SA 4.0.
+          © 2026 CipherDeck Journal. Published under CC BY-SA 4.0.
         </div>
 <div class="flex items-center gap-4">
 <span class="flex items-center gap-1 text-secondary"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Network Status: Healthy</span>
@@ -232,7 +237,6 @@
 </div>
 </div>
 </footer>
-<script src="/assets/api.js?v=3"></script>
-<script src="/assets/api.js?v=3"></script>
-<script src="/assets/app-messages.js?v=3"></script>
+<script src="/assets/api.js?v=4"></script>
+<script src="/assets/app-messages.js?v=4"></script>
 </body></html>

@@ -26,11 +26,11 @@ function pfEnsureStatus() {
       const uname = document.getElementById('signin-handle').value.trim();
       const pwd = document.getElementById('signin-pwd').value;
       window.pfUsername = uname;
-      pfStatus('pf-msg', 'Authenticating credentials (PBKDF2-HMAC-SHA256)…');
+      pfStatus('pf-msg', 'Checking credentials…');
       const r = await pfLogin(uname, pwd);
       window.pfTicket = r.ticket;
       switchStage('totp');
-      pfStatus('pf-msg', 'Credentials valid. Enter your RFC 6238 TOTP code.', true);
+      pfStatus('pf-msg', 'Credentials verified. Enter your 6-digit authenticator code.', true);
     } catch (err) {
       pfStatus('pf-msg', (err && err.message) || String(err), false);
     }
@@ -134,14 +134,14 @@ function pfEnsureStatus() {
     };
   }
 
-  // Verify & Decrypt Session
-  const verify = [...panel.querySelectorAll('button')].find(b => b.textContent.includes('Verify & Decrypt Session'));
+  // Verify & Sign In
+  const verify = document.getElementById('btn-totp-verify') || [...panel.querySelectorAll('button')].find(b => b.textContent.includes('Verify'));
   if (verify) verify.onclick = async () => {
     pfEnsureStatus();
-    if (!window.pfTicket) { pfStatus('pf-msg', 'Sign in first.', false); switchStage('signin'); return; }
+    if (!window.pfTicket) { pfStatus('pf-msg', 'Please sign in first.', false); switchStage('signin'); return; }
     const code = [1, 2, 3, 4, 5, 6].map(i => (document.getElementById('totp-' + i)?.value || '')).join('');
-    if (code.length !== 6) { pfStatus('pf-msg', 'Enter the 6-digit code.', false); return; }
-    pfStatus('pf-msg', 'Verifying TOTP ticket…');
+    if (code.length !== 6) { pfStatus('pf-msg', 'Please enter all 6 digits of your authenticator code.', false); return; }
+    pfStatus('pf-msg', 'Verifying two-factor code…');
     try {
       const r = await pfLogin2FA(window.pfTicket, code);
       pfSetSession(r.session_token);
@@ -154,26 +154,20 @@ function pfEnsureStatus() {
   // Dev helper: fill the code from the backend (dev-only endpoint).
   const dev = document.createElement('button');
   dev.type = 'button';
-  dev.className = 'w-full mt-2 border border-outline-variant hover:border-outline text-outline hover:text-on-surface font-label-code text-body-sm uppercase py-2 px-4 flex items-center justify-center gap-2 transition-colors duration-150';
-  dev.innerHTML = '<span class="material-symbols-outlined text-sm">developer_mode</span><span>DEV: auto-fill current code</span><span class="text-outline-variant">(dev helper)</span>';
+  dev.className = 'w-full mt-2 border border-outline-variant hover:border-outline text-outline hover:text-on-surface font-label-code text-body-sm uppercase py-2 px-4 flex items-center justify-center gap-2 transition-colors duration-150 cursor-pointer';
+  dev.innerHTML = '<span class="material-symbols-outlined text-sm">developer_mode</span><span>DEV: auto-fill 2FA code</span><span class="text-outline-variant">(local helper)</span>';
   dev.onclick = async () => {
     pfEnsureStatus();
-    if (!window.pfUsername) { pfStatus('pf-msg', 'Sign in with a handle first.', false); switchStage('signin'); return; }
+    if (!window.pfUsername) { pfStatus('pf-msg', 'Please sign in with a username first.', false); switchStage('signin'); return; }
     try {
       const r = await pfDevTotp(window.pfUsername);
       const code = r.code.padStart(6, '0');
       code.split('').forEach((c, i) => { const el = document.getElementById('totp-' + (i + 1)); if (el) el.value = c; });
-      pfStatus('pf-msg', 'DEV code filled for @' + r.username + ' — hit Verify & Decrypt.', true);
+      pfStatus('pf-msg', 'Demo code filled for @' + r.username + ' — click Verify & Sign In.', true);
     } catch (err) {
       pfStatus('pf-msg', err.message, false);
     }
   };
   const wrap = panel.querySelector('.space-y-space-sm');
   if (wrap) wrap.appendChild(dev);
-})();
-
-/* Register tab inside login -> forward to the dedicated page */
-(function () {
-  const form = [...document.querySelectorAll('form')].find(f => f.querySelector('#reg-handle'));
-  if (form) form.onsubmit = (e) => { e.preventDefault(); location.href = '/register/'; };
 })();
